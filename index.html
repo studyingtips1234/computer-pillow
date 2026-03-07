@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computer Pillow Games | Stay Comfy</title>
+    
+    <!-- Modern Styling & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
@@ -23,20 +26,21 @@
     </script>
 
     <style>
-        body { font-family: 'Outfit', sans-serif; background-color: #0b0e14; color: #e2e8f0; scroll-behavior: smooth; }
-        .glass { background: rgba(23, 28, 41, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+        body { font-family: 'Outfit', sans-serif; background-color: #0b0e14; color: #e2e8f0; scroll-behavior: smooth; margin:0; }
+        .glass { background: rgba(23, 28, 41, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .game-card { background: #1a202c; border-radius: 30px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; border: 1px solid rgba(255,255,255,0.03); cursor: pointer; }
         .game-card:hover { transform: scale(1.03) translateY(-5px); border-color: #6366f1; box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.4); }
-        .label-ads { text-align: center; font-size: 10px; color: #475569; letter-spacing: 2px; margin: 10px 0; text-transform: uppercase; }
+        .label-ads { text-align: center; font-size: 10px; color: #475569; letter-spacing: 2px; padding: 10px 0; text-transform: uppercase; }
         .hidden { display: none; }
-        #gameframe { border-radius: 20px; background: #000; width: 100%; height: 85vh; border: none; }
+        #gameframe { border-radius: 20px; background: #000; width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center border-b border-white/5">
+    <!-- Navigation -->
+    <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('home')">
-            <div class="bg-indigo-600 p-2.5 rounded-2xl shadow-lg">
+            <div class="bg-indigo-600 p-2.5 rounded-2xl shadow-lg shadow-indigo-500/20">
                 <i class="fa-solid fa-couch text-white text-xl"></i>
             </div>
             <span class="text-2xl font-800 tracking-tighter uppercase font-bold">Computer <span class="text-indigo-400">Pillow</span></span>
@@ -48,84 +52,251 @@
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-12">
+        
+        <!-- HOME PAGE GRID -->
         <div id="home-page">
             <div class="mb-12 text-center md:text-left">
                 <h1 class="text-5xl font-800 mb-3 tracking-tight">Stay <span class="text-indigo-500">Comfy</span>.</h1>
-                <p class="text-slate-400 italic">"The softest spot for the hardest games."</p>
+                <p class="text-slate-400 italic">"24 Games Online - All Fixes Applied."</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <!-- 1. Eggy Car -->
-                <div class="game-card group p-4" onclick="launchGame('Eggy Car', 'https://1games.io/game/eggy-car/')">
-                    <div class="h-44 bg-gradient-to-br from-yellow-500 to-orange-700 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-egg text-5xl text-white/20"></i></div>
-                    <h3 class="font-bold text-lg">Eggy Car</h3>
-                    <p class="text-slate-500 text-xs">Drive carefully!</p>
+                
+                <!-- 1. Sister Location (FIXED SOURCE) -->
+                <div class="game-card group p-4 border-2 border-purple-500/40" onclick="launchGame('Sister Location', 'https://irv77.github.io/hd_fnaf/sl/')">
+                    <div class="h-44 bg-gradient-to-br from-purple-900 to-slate-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-face-grin-tears text-5xl text-white/20 group-hover:scale-110 transition duration-500"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-purple-400">Sister Location</h3>
+                    <p class="text-slate-500 text-xs font-bold uppercase tracking-widest text-center text-purple-300">Fixed Source</p>
                 </div>
-                <!-- 2. Basketball Random -->
+
+                <!-- 2. FNAF 6 -->
+                <div class="game-card group p-4" onclick="launchGame('FNAF 6', 'https://irv77.github.io/hd_fnaf/ps/')">
+                    <div class="h-44 bg-gradient-to-br from-orange-900 to-black rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-pizza-slice text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">FNAF 6</h3>
+                    <p class="text-slate-500 text-xs">Pizzeria Sim</p>
+                </div>
+
+                <!-- 3. FNAF 4 -->
+                <div class="game-card group p-4" onclick="launchGame('FNAF 4', 'https://run3.io/popgame/fnaf/fnaf4.html')">
+                    <div class="h-44 bg-gradient-to-br from-red-600 to-black rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-mask text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">FNAF 4</h3>
+                    <p class="text-slate-500 text-xs">Nightmare</p>
+                </div>
+
+                <!-- 4. FNAF 3 -->
+                <div class="game-card group p-4" onclick="launchGame('FNAF 3', 'https://run3.io/popgame/fnaf/fnaf3.html')">
+                    <div class="h-44 bg-gradient-to-br from-green-900 to-black rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-mask text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">FNAF 3</h3>
+                    <p class="text-slate-500 text-xs">Horror</p>
+                </div>
+
+                <!-- 5. FNAF 2 -->
+                <div class="game-card group p-4" onclick="launchGame('FNAF 2', 'https://run3.io/popgame/fnaf/fnaf2.html')">
+                    <div class="h-44 bg-gradient-to-br from-red-800 to-black rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-mask text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">FNAF 2</h3>
+                    <p class="text-slate-500 text-xs">Sequel</p>
+                </div>
+
+                <!-- 6. FNAF 1 -->
+                <div class="game-card group p-4" onclick="launchGame('FNAF 1', 'https://run3.io/popgame/fnaf/fnaf1/')">
+                    <div class="h-44 bg-gradient-to-br from-red-900 to-slate-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-mask text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">FNAF 1</h3>
+                    <p class="text-slate-500 text-xs">Original</p>
+                </div>
+
+                <!-- 7. BitLife -->
+                <div class="game-card group p-4" onclick="launchGame('BitLife', 'https://slope-unblocked-10x.github.io/strategy-games/bitlife/')">
+                    <div class="h-44 bg-gradient-to-br from-pink-600 to-red-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-person-rays text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">BitLife</h3>
+                    <p class="text-slate-500 text-xs">Life Sim</p>
+                </div>
+
+                <!-- 8. Slope -->
+                <div class="game-card group p-4" onclick="launchGame('Slope', 'https://slope-unblocked-10x.github.io/action-games/slope/')">
+                    <div class="h-44 bg-gradient-to-br from-green-600 to-emerald-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-circle-notch text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Slope</h3>
+                    <p class="text-slate-500 text-xs">Speed</p>
+                </div>
+
+                <!-- 9. Subway Surfers -->
+                <div class="game-card group p-4" onclick="launchGame('Subway Surfers', 'https://slope-unblocked-10x.github.io/action-games/subway-surfers/')">
+                    <div class="h-44 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-train text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Subway Surfers</h3>
+                    <p class="text-slate-500 text-xs">Runner</p>
+                </div>
+
+                <!-- 10. Stickman Archer -->
+                <div class="game-card group p-4" onclick="launchGame('Stickman Archer', 'https://jasongamesdev.github.io/ragdoll-archers/')">
+                    <div class="h-44 bg-gradient-to-br from-indigo-500 to-slate-800 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-bullseye text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Stickman Archer</h3>
+                    <p class="text-slate-500 text-xs">Physics</p>
+                </div>
+
+                <!-- 11. Terraria -->
+                <div class="game-card group p-4" onclick="launchGame('Terraria', 'https://slope-unblocked-10x.github.io/action-games/terraira/')">
+                    <div class="h-44 bg-gradient-to-br from-green-800 to-amber-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-tree text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Terraria</h3>
+                    <p class="text-slate-500 text-xs">Adventure</p>
+                </div>
+
+                <!-- 12. World's Hardest Game -->
+                <div class="game-card group p-4" onclick="launchGame('Worlds Hardest Game', 'https://slope-unblocked-10x.github.io/action-games/worlds-hardest-game/')">
+                    <div class="h-44 bg-gradient-to-br from-red-600 to-slate-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-brain text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Worlds Hardest Game</h3>
+                    <p class="text-slate-500 text-xs">Hard Mode</p>
+                </div>
+
+                <!-- 13. Basketball Random -->
                 <div class="game-card group p-4" onclick="loadBasketballRandom()">
-                    <div class="h-44 bg-gradient-to-br from-orange-600 to-red-900 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-basketball text-5xl text-white/20"></i></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Basketball Random</h3>
-                    <p class="text-slate-500 text-xs">One button fun.</p>
+                    <div class="h-44 bg-gradient-to-br from-orange-600 to-red-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-basketball text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Basketball Random</h3>
+                    <p class="text-slate-500 text-xs">One-key hoops.</p>
                 </div>
-                <!-- 3. Snow Rider 3D -->
+
+                <!-- 14. Snow Rider 3D -->
                 <div class="game-card group p-4" onclick="loadSnowRider()">
-                    <div class="h-44 bg-gradient-to-br from-blue-400 to-slate-700 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-snowflake text-5xl text-white/20"></i></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Snow Rider 3D</h3>
-                    <p class="text-slate-500 text-xs">Don't hit the trees.</p>
+                    <div class="h-44 bg-gradient-to-br from-blue-400 to-slate-700 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-snowflake text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Snow Rider 3D</h3>
+                    <p class="text-slate-500 text-xs">Winter Fun</p>
                 </div>
-                <!-- 4. FNAE -->
+
+                <!-- 15. Eggy Car -->
+                <div class="game-card group p-4" onclick="launchGame('Eggy Car', 'https://1games.io/game/eggy-car/')">
+                    <div class="h-44 bg-gradient-to-br from-yellow-500 to-orange-700 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-egg text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Eggy Car</h3>
+                    <p class="text-slate-500 text-xs">Drive</p>
+                </div>
+
+                <!-- 16. Five Nights at Epsteins -->
                 <div class="game-card group p-4" onclick="launchGame('Five Nights at Epsteins', 'https://www.gameflare.com/embed/five-nights-at-epstein-s/')">
-                    <div class="h-44 bg-gradient-to-br from-red-900 to-black rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-ghost text-5xl text-white/20"></i></div>
+                    <div class="h-44 bg-gradient-to-br from-red-900 to-black rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-ghost text-5xl text-white/20"></i>
+                    </div>
                     <h3 class="font-bold text-lg">FNAE</h3>
-                    <p class="text-slate-500 text-xs">Can you survive?</p>
+                    <p class="text-slate-500 text-xs">Survive</p>
                 </div>
-                <!-- 5. Retro Bowl -->
+
+                <!-- 17. Retro Bowl -->
                 <div class="game-card group p-4" onclick="launchGame('Retro Bowl', 'https://game316009.konggames.com/gamez/0031/6009/live/index.html')">
-                    <div class="h-44 bg-gradient-to-br from-indigo-900 to-blue-900 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-football text-5xl text-white/20"></i></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Retro Bowl</h3>
-                    <p class="text-slate-500 text-xs">Classic Football.</p>
+                    <div class="h-44 bg-gradient-to-br from-indigo-900 to-blue-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-football text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Retro Bowl</h3>
+                    <p class="text-slate-500 text-xs">NFL</p>
                 </div>
-                <!-- 6. Retro Bowl College -->
+
+                <!-- 18. Retro Bowl College -->
                 <div class="game-card group p-4" onclick="launchGame('Retro Bowl College', 'https://game.play-retro-bowl.com/retro-bowl-games/retro-bowl-college/retro-bowl-college.html')">
-                    <div class="h-44 bg-gradient-to-br from-yellow-700 to-indigo-800 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-graduation-cap text-5xl text-white/20"></i></div>
-                    <h3 class="font-bold text-lg text-indigo-400">RB College</h3>
-                    <p class="text-slate-500 text-xs">Win the Trophy.</p>
+                    <div class="h-44 bg-gradient-to-br from-yellow-700 to-indigo-800 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-graduation-cap text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">RB College</h3>
+                    <p class="text-slate-500 text-xs">NCAA</p>
                 </div>
-                <!-- 7. Basketball Legends -->
+
+                <!-- 19. Basketball Legends -->
                 <div class="game-card group p-4" onclick="launchGame('Basketball Legends', 'https://html5.gamedistribution.com/rvvASMiM/69d78d071f704fa183d75b4114ae40ec/index.html?gd_sdk_referrer_url=https://www.basketballlegends.fun/basketball-legends')">
-                    <div class="h-44 bg-gradient-to-br from-blue-700 to-purple-900 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-star text-5xl text-white/20"></i></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Basketball Legends</h3>
-                    <p class="text-slate-500 text-xs">NBA Stars.</p>
+                    <div class="h-44 bg-gradient-to-br from-blue-700 to-purple-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-star text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Basketball Legends</h3>
+                    <p class="text-slate-500 text-xs">Stars</p>
                 </div>
-                <!-- 8. Coreball -->
+
+                <!-- 20. Coreball -->
                 <div class="game-card group p-4" onclick="launchGame('Coreball', 'https://iogamesweb.com/play/core-ball/')">
-                    <div class="h-44 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-circle-dot text-5xl text-white/20"></i></div>
+                    <div class="h-44 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-circle-dot text-5xl text-white/20"></i>
+                    </div>
                     <h3 class="font-bold text-lg">Coreball</h3>
-                    <p class="text-slate-500 text-xs">Don't miss.</p>
+                    <p class="text-slate-500 text-xs">Skill</p>
                 </div>
-                <!-- 9. Geometry Dash -->
+
+                <!-- 21. Geometry Dash -->
                 <div class="game-card group p-4" onclick="launchGame('Geometry Dash', 'https://1games.io/game/geometry-dash-lite/')">
-                    <div class="h-44 bg-gradient-to-br from-green-500 to-cyan-700 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-square-rss text-5xl text-white/20"></i></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Geometry Dash</h3>
-                    <p class="text-slate-500 text-xs">Stay in rhythm.</p>
+                    <div class="h-44 bg-gradient-to-br from-green-500 to-cyan-700 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-square-rss text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Geometry Dash</h3>
+                    <p class="text-slate-500 text-xs">Rhythm</p>
                 </div>
-                <!-- 10. Drift Boss -->
+
+                <!-- 22. Drift Boss -->
                 <div class="game-card group p-4" onclick="launchGame('Drift Boss', 'https://gamecollections.me/game/owner/drift-boss-gm/')">
-                    <div class="h-44 bg-gradient-to-br from-indigo-500 to-purple-700 rounded-2xl mb-4 flex items-center justify-center"><i class="fa-solid fa-car-side text-5xl text-white/20"></i></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Drift Boss</h3>
-                    <p class="text-slate-500 text-xs">Keep drifting.</p>
+                    <div class="h-44 bg-gradient-to-br from-indigo-500 to-purple-700 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-car-side text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Drift Boss</h3>
+                    <p class="text-slate-500 text-xs">Drift</p>
                 </div>
+
+                <!-- 23. Bloxorz -->
+                <div class="game-card group p-4" onclick="launchGame('Bloxorz', 'https://slope-unblocked-10x.github.io/strategy-games/bloxors/')">
+                    <div class="h-44 bg-gradient-to-br from-indigo-600 to-slate-800 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-cube text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Bloxorz</h3>
+                    <p class="text-slate-500 text-xs">Logic</p>
+                </div>
+
+                <!-- 24. Rooftop Snipers -->
+                <div class="game-card group p-4" onclick="launchGame('Rooftop Snipers', 'https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/')">
+                    <div class="h-44 bg-gradient-to-br from-indigo-700 to-slate-900 rounded-2xl mb-4 flex items-center justify-center">
+                        <i class="fa-solid fa-crosshairs text-5xl text-white/20"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Rooftop Snipers</h3>
+                    <p class="text-slate-500 text-xs">Duel</p>
+                </div>
+
             </div>
         </div>
 
+        <!-- PLAYER PAGE -->
         <div id="player-page" class="hidden">
             <div class="flex justify-between items-center mb-4">
-                <button onclick="showPage('home')" class="flex items-center space-x-2 text-indigo-400 hover:text-white transition font-bold"><i class="fa-solid fa-arrow-left"></i> <span>EXIT</span></button>
-                <h2 id="active-title" class="text-2xl font-bold uppercase tracking-tighter text-indigo-400">Loading...</h2>
+                <button onclick="showPage('home')" class="flex items-center space-x-2 text-indigo-400 hover:text-white transition font-bold uppercase tracking-widest">
+                    <i class="fa-solid fa-arrow-left"></i> <span>Close Game</span>
+                </button>
+                <h2 id="active-title" class="text-2xl font-bold uppercase tracking-tighter text-indigo-400 text-center">Loading...</h2>
                 <div class="w-10"></div>
             </div>
+
             <div class="label-ads">-ADVERTISEMENTS-</div>
-            <div id="game-container" class="relative w-full shadow-2xl overflow-hidden rounded-[30px] border-4 border-white/5 bg-black" style="height: 85vh;"></div>
+
+            <div id="game-container" class="relative w-full shadow-2xl overflow-hidden rounded-[30px] border-4 border-white/5 bg-black" style="height: 85vh;">
+                <!-- Iframe injected here -->
+            </div>
+
             <div class="ads mt-8">
                 <div class="label-ads">-ADVERTISEMENTS-</div>
                 <div class="detail-ads flex justify-center">
@@ -136,15 +307,17 @@
             </div>
         </div>
 
+        <!-- REQUEST PAGE -->
         <div id="request-page" class="hidden max-w-2xl mx-auto py-12">
             <div class="glass p-10 rounded-[40px]">
-                <h2 class="text-4xl font-800 mb-6 text-center">Request Game</h2>
+                <h2 class="text-4xl font-800 mb-6 text-center uppercase">Request Game</h2>
                 <form onsubmit="event.preventDefault(); alert('Request Received!'); showPage('home');" class="space-y-6">
                     <input type="text" required class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Game Title">
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 py-5 rounded-2xl font-bold shadow-lg transition">SUBMIT</button>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 py-5 rounded-2xl font-bold shadow-lg transition uppercase">Submit</button>
                 </form>
             </div>
         </div>
+
     </main>
 
     <footer class="py-12 border-t border-white/5 text-center text-slate-600 text-[10px] tracking-[0.3em] uppercase">
@@ -156,30 +329,35 @@
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('player-page').classList.add('hidden');
             document.getElementById('request-page').classList.add('hidden');
+
             if (page === 'home') {
                 document.getElementById('home-page').classList.remove('hidden');
                 document.getElementById('game-container').innerHTML = ""; 
             } else if (page === 'request') {
                 document.getElementById('request-page').classList.remove('hidden');
             }
+            window.scrollTo(0,0);
         }
 
         function launchGame(title, url) {
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('player-page').classList.remove('hidden');
             document.getElementById('active-title').innerText = title;
+
+            const container = document.getElementById('game-container');
+            container.innerHTML = ""; 
+            
             const iframe = document.createElement('iframe');
             iframe.id = "gameframe";
             iframe.src = url;
             iframe.setAttribute("allowfullscreen", "true");
-            iframe.setAttribute("scrolling", "no");
-            iframe.setAttribute("allow", "autoplay; fullscreen; camera; focus-without-user-activation *; monetization; gamepad; keyboard-map *; xr-spatial-tracking; clipboard-write; web-share; accelerometer; magnetometer; gyroscope; display-capture");
+            iframe.setAttribute("scrolling", "auto");
+            iframe.setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen; monetization; gamepad; keyboard-map *; xr-spatial-tracking; web-share; display-capture");
             iframe.setAttribute("sandbox", "allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads");
-            iframe.style.width = "100%";
-            iframe.style.height = "100%";
-            const container = document.getElementById('game-container');
-            container.innerHTML = ""; 
+            iframe.setAttribute("playsinline", "");
+            
             container.appendChild(iframe);
+
             try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
         }
 
