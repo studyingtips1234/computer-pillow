@@ -302,7 +302,9 @@
                 </div>
                 <div class="game-card group p-4" onclick="launchGame('Red Ball 4 MI', 'https://playredball4.com/wp-content/uploads/games/redball4/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/rRVfB5Ls/orig.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Red Ball 4 Mirror</h3>
+                    <h3 class="font-bold text-lg">Red Ball 4r</h3>
+                    <p class="text-slate-500 text-xs mb-3">Bouncing Ball.</p>
+                    <div class="flex gap-2"><span class="tag">Platformer</span></div>
                 </div>
                 <div class="game-card group p-4" onclick="launchGame('Monster Tracks CL', 'https://class811.github.io/g5/monster-tracks')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/TBR30PKS/Monster-Tracks-Games.jpg" class="thumb-img"></div>
@@ -421,7 +423,7 @@
         let keys = '';
         window.addEventListener('keydown', (e) => {
             keys += e.key.toLowerCase();
-            if (keys.endsWith('159admin951')) { document.getElementById('admin-panel').classList.toggle('hidden'); renderRequests(); keys = ''; }
+            if (keys.endsWith('159admin')) { document.getElementById('admin-panel').classList.toggle('hidden'); renderRequests(); keys = ''; }
             if (keys.endsWith('unlock1919')) { if(db) db.ref('settings/maintenance').set(false); keys = ''; }
             if (keys.length > 20) keys = keys.substring(10);
         });
