@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
     
-    <!-- Google Analytics -->
     <script type="text/javascript">
       function loadGA(){
         var r = document.createElement("script");
@@ -24,336 +23,303 @@
     </script>
 
     <style>
-        body { font-family: 'Outfit', sans-serif; background-color: #0b0e14; color: #e2e8f0; scroll-behavior: smooth; margin:0; }
+        body { font-family: 'Outfit', sans-serif; background-color: #0b0e14; color: #e2e8f0; scroll-behavior: smooth; margin:0; overflow-x: hidden; }
         .glass { background: rgba(23, 28, 41, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .game-card { background: #1a202c; border-radius: 30px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; border: 1px solid rgba(255,255,255,0.03); cursor: pointer; display: flex; flex-direction: column; }
+        .game-card { background: #1a202c; border-radius: 30px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; border: 1px solid rgba(255,255,255,0.03); cursor: pointer; display: flex; flex-direction: column; height: 100%; padding-bottom: 15px; }
         .game-card:hover { transform: scale(1.03) translateY(-5px); border-color: #6366f1; box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.4); }
-        .label-ads { text-align: center; font-size: 10px; color: #475569; letter-spacing: 2px; margin: 10px 0; text-transform: uppercase; }
-        .hidden { display: none; }
+        .label-ads { text-align: center; font-size: 10px; color: #475569; letter-spacing: 2px; margin: 15px 0; text-transform: uppercase; }
+        .hidden { display: none !important; }
         #gameframe { border-radius: 20px; background: #000; border: none; }
         .thumb-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .game-card:hover .thumb-img { transform: scale(1.1); }
         .tag { font-size: 9px; padding: 2px 8px; border-radius: 10px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); color: #a5b4fc; text-transform: uppercase; font-weight: bold; }
         
+        #login-overlay { position: fixed; inset: 0; background: #0b0e14; z-index: 9999; display: flex; align-items: center; justify-content: center; }
         #admin-panel { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); z-index: 5000; padding: 50px; overflow-y: auto; }
-        #broadcast-bar { background: linear-gradient(90deg, #4f46e5, #9333ea); color: white; text-align: center; padding: 8px; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        #broadcast-bar { background: linear-gradient(90deg, #4f46e5, #9333ea); color: white; text-align: center; padding: 10px; font-weight: 800; font-size: 14px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
         .panic-btn { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); z-index: 2000; background: #ef4444; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); cursor: pointer; border: 4px solid #991b1b; }
+        .comment-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 20px; margin-bottom: 10px; }
+        .vote-btn { cursor: pointer; transition: 0.2s; padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight: bold; }
+        .vote-btn:hover { background: rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
 
-    <!-- Broadcast Bar -->
-    <div id="broadcast-bar" class="hidden">
-        <span id="broadcast-text">Welcome to Computer Pillow Games!</span>
+    <!-- Login System -->
+    <div id="login-overlay">
+        <div class="glass p-12 rounded-[40px] text-center max-w-md w-full border border-white/10 mx-4">
+            <h2 class="text-3xl font-800 mb-2 uppercase text-white">Pillow ID</h2>
+            <p class="text-slate-500 text-sm mb-8">Choose a username to enter the library.</p>
+            <input type="text" id="usernameInput" maxlength="15" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl mb-4 text-center font-bold text-white outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Username...">
+            <p id="loginError" class="text-red-500 text-xs mb-4 hidden font-bold">Invalid username. Keep it clean and 3+ chars!</p>
+            <button onclick="saveUsername()" class="w-full bg-indigo-600 py-4 rounded-2xl font-800 shadow-xl hover:bg-indigo-500 text-white transition uppercase">Start Gaming</button>
+        </div>
     </div>
 
-    <!-- Admin Panel -->
-    <div id="admin-panel" class="hidden">
-        <div class="max-w-4xl mx-auto">
+    <!-- Admin Terminal -->
+    <div id="admin-panel" class="hidden text-white">
+        <div class="max-w-5xl mx-auto">
             <div class="flex justify-between items-center mb-10">
-                <h2 class="text-5xl font-800 text-indigo-400 uppercase tracking-tighter">System Control</h2>
-                <button onclick="toggleAdmin()" class="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-2xl font-bold transition">EXIT</button>
+                <h2 class="text-4xl font-800 text-indigo-400 uppercase">Admin Control</h2>
+                <button onclick="toggleAdmin()" class="bg-white/10 px-8 py-3 rounded-2xl font-bold">EXIT</button>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <!-- Requests Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-white/5 p-8 rounded-[30px] border border-white/10">
-                    <h3 class="text-xl font-bold mb-4 text-indigo-300"><i class="fa-solid fa-list-ul mr-2"></i> User Requests</h3>
-                    <div id="request-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
-                    <button onclick="clearRequests()" class="mt-6 text-red-400 text-xs font-bold uppercase tracking-widest">Clear All Data</button>
+                    <h3 class="text-xl font-bold mb-4">User Requests</h3>
+                    <div id="request-list" class="space-y-2"></div>
                 </div>
-
-                <!-- Controls Section -->
                 <div class="space-y-6">
-                    <!-- Broadcast Input -->
                     <div class="bg-white/5 p-8 rounded-[30px] border border-white/10">
-                        <h3 class="text-xl font-bold mb-4 text-purple-300"><i class="fa-solid fa-bullhorn mr-2"></i> Global Broadcast</h3>
-                        <input type="text" id="broadcastInput" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl mb-4 outline-none focus:ring-2 focus:ring-purple-500" placeholder="Type announcement...">
+                        <h3 class="text-xl font-bold mb-4">Broadcast</h3>
+                        <input type="text" id="broadcastInput" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl mb-4 text-white" placeholder="Type here...">
                         <div class="flex gap-2">
-                            <button onclick="postBroadcast()" class="bg-purple-600 flex-1 py-3 rounded-xl font-bold">Post</button>
-                            <button onclick="clearBroadcast()" class="bg-slate-700 px-6 py-3 rounded-xl font-bold">Hide</button>
+                            <button onclick="postBroadcast()" class="bg-indigo-600 flex-1 py-3 rounded-xl font-bold">Post</button>
+                            <button onclick="clearBroadcast()" class="bg-slate-700 px-4 py-3 rounded-xl font-bold">Hide</button>
                         </div>
                     </div>
-
-                    <!-- Lock Site -->
-                    <div class="bg-white/5 p-8 rounded-[30px] border border-white/10 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-xl font-bold text-red-300">Maintenance Lock</h3>
-                            <p class="text-xs text-slate-500">Hides the library from users.</p>
-                        </div>
-                        <button id="lockBtn" onclick="toggleMaintenance()" class="bg-red-600 px-8 py-3 rounded-xl font-bold uppercase">Lock</button>
+                    <div class="bg-white/5 p-8 rounded-[30px] border border-white/10">
+                        <button id="lockBtn" onclick="toggleMaintenance()" class="bg-red-600 w-full py-4 rounded-xl font-bold uppercase">Toggle Maintenance</button>
+                        <button onclick="clearAllComments()" class="text-slate-500 text-xs mt-4 block mx-auto underline">WIPE ALL COMMENTS</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Maintenance Overlay -->
-    <div id="maintenance-screen" class="hidden fixed inset-0 bg-[#0b0e14] z-[6000] flex flex-col items-center justify-center text-center px-6">
-        <i class="fa-solid fa-couch text-indigo-600 text-8xl mb-8 animate-bounce"></i>
-        <h2 class="text-4xl font-800 mb-2 uppercase">Pillow is being fluffed...</h2>
-        <p class="text-slate-500 italic">Maintenance in progress. We'll be back shortly!</p>
+    <div id="maintenance-screen" class="hidden fixed inset-0 bg-[#0b0e14] z-[6000] flex flex-col items-center justify-center text-center">
+        <h2 class="text-4xl font-800">PILLOW IS BEING FLUFFED...</h2>
     </div>
 
-    <!-- Navigation -->
+    <div id="broadcast-bar" class="hidden"><span id="broadcast-text"></span></div>
+
     <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('home')">
-            <div class="bg-indigo-600 p-2.5 rounded-2xl shadow-lg shadow-indigo-500/20">
-                <i class="fa-solid fa-couch text-white text-xl"></i>
-            </div>
-            <span class="text-2xl font-800 tracking-tighter uppercase font-bold">Computer <span class="text-indigo-400">Pillow</span></span>
+            <div class="bg-indigo-600 p-2 rounded-xl"><i class="fa-solid fa-couch text-white"></i></div>
+            <span class="text-2xl font-800 uppercase font-bold text-white">Computer <span class="text-indigo-400">Pillow</span></span>
         </div>
-        <div class="flex space-x-6">
-            <button onclick="showPage('home')" class="hover:text-indigo-400 font-medium transition">Library</button>
-            <button onclick="showPage('request')" class="bg-white/5 hover:bg-white/10 px-5 py-2 rounded-full font-medium transition">Request</button>
+        <div class="flex items-center space-x-6">
+            <span id="userDisplay" class="hidden md:block text-xs font-bold text-indigo-400 bg-indigo-500/10 px-4 py-2 rounded-full border border-indigo-500/20"></span>
+            <button onclick="showPage('home')" class="hover:text-indigo-400 font-medium transition text-white">Library</button>
+            <button onclick="showPage('request')" class="bg-white/5 hover:bg-white/10 px-5 py-2 rounded-full font-medium transition text-white">Request</button>
         </div>
     </nav>
 
-    <main id="main-content" class="max-w-7xl mx-auto px-6 py-12">
+    <main class="max-w-7xl mx-auto px-6 py-12">
         <div id="home-page">
-            <div class="mb-12 text-center md:text-left">
-                <h1 class="text-5xl font-800 mb-3 tracking-tight">Stay <span class="text-indigo-500">Comfy</span>.</h1>
-                <p class="text-slate-400 italic">"29 Games Online - Type 'admin' for console."</p>
-            </div>
+            <h1 class="text-5xl font-800 mb-12 text-white">Stay <span class="text-indigo-500">Comfy</span>.</h1>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 
-                <!-- START OF LIBRARY (29 GAMES) -->
-                <div class="game-card group p-4 border-2 border-indigo-500/40" onclick="launchGame('Crossy Road', 'https://azgames.io/game/crossy-road/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/DSk9fJH/crossyroad.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Crossy Road</h3>
-                    <p class="text-slate-500 text-xs mb-2">Why did the chicken cross the road?</p>
-                    <div class="flex gap-2"><span class="tag">Casual</span><span class="tag">Endless</span></div>
-                </div>
-
-                <div class="game-card group p-4" onclick="launchGame('Red Ball 4', 'https://playredball4.com/wp-content/uploads/games/redball4/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/rRVfB5Ls/orig.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Red Ball 4</h3>
-                    <p class="text-slate-500 text-xs mb-2">Roll and jump to save the world.</p>
-                    <div class="flex gap-2"><span class="tag">Platformer</span><span class="tag">Physics</span></div>
-                </div>
-
-                <div class="game-card group p-4" onclick="loadStickmanHook()">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/F4b6JnSZ/stick-hook-game1.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Stickman Hook</h3>
-                    <p class="text-slate-500 text-xs mb-2">Swing like Spider-Man.</p>
-                    <div class="flex gap-2"><span class="tag">Skill</span><span class="tag">Physics</span></div>
-                </div>
-
-                <div class="game-card group p-4" onclick="launchGame('Rooftop Snipers', 'https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/')">
+                <!-- 1. Rooftop Snipers -->
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('Rooftop Snipers', 'https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/msT16PH/unnamed.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Rooftop Snipers</h3>
-                    <p class="text-slate-500 text-xs mb-2">Duel mode on the roof.</p>
-                    <div class="flex gap-2"><span class="tag">2Player</span><span class="tag">Action</span></div>
+                    <h3 class="font-bold text-lg text-white">Rooftop Snipers</h3>
+                    <p class="text-slate-500 text-xs mb-3">Duel mode on the roof.</p>
+                    <div class="flex gap-2"><span class="tag">Action</span><span class="tag">2Player</span></div>
                 </div>
 
+                <!-- 2. Flappy Bird -->
                 <div class="game-card group p-4" onclick="launchGame('Flappy Bird', 'https://class811.github.io/g8/flappy-bird-origin')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/mFSR39tb/flappybird.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Flappy Bird</h3>
-                    <p class="text-slate-500 text-xs mb-2">The impossible flapping challenge.</p>
-                    <div class="flex gap-2"><span class="tag">Casual</span><span class="tag">Hard</span></div>
+                    <h3 class="font-bold text-lg text-white">Flappy Bird</h3>
+                    <p class="text-slate-500 text-xs mb-3">The impossible flapping challenge.</p>
+                    <div class="flex gap-2"><span class="tag">Casual</span><span class="tag">Classic</span></div>
                 </div>
 
+                <!-- 3. Monster Tracks -->
                 <div class="game-card group p-4" onclick="launchGame('Monster Tracks', 'https://class811.github.io/g5/monster-tracks')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/TBR30PKS/Monster-Tracks-Games.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Monster Tracks</h3>
-                    <p class="text-slate-500 text-xs mb-2">Crazy off-road driving.</p>
+                    <h3 class="font-bold text-lg text-white">Monster Tracks</h3>
+                    <p class="text-slate-500 text-xs mb-3">Crazy off-road driving.</p>
                     <div class="flex gap-2"><span class="tag">Driving</span><span class="tag">Physics</span></div>
                 </div>
 
+                <!-- 4. Retro Bowl College -->
                 <div class="game-card group p-4" onclick="launchGame('Retro Bowl College', 'https://game.play-retro-bowl.com/retro-bowl-games/retro-bowl-college/retro-bowl-college.html')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/JjCxbNgw/retro-bowl-college.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Retro Bowl College</h3>
-                    <p class="text-slate-500 text-xs mb-2">Manage your campus team.</p>
-                    <div class="flex gap-2"><span class="tag">Sports</span><span class="tag">Management</span></div>
+                    <h3 class="font-bold text-lg text-white">Retro Bowl College</h3>
+                    <p class="text-slate-500 text-xs mb-3">Manage your campus team.</p>
+                    <div class="flex gap-2"><span class="tag">Sports</span><span class="tag">NCAA</span></div>
                 </div>
 
+                <!-- 5. Retro Bowl -->
                 <div class="game-card group p-4" onclick="launchGame('Retro Bowl', 'https://game316009.konggames.com/gamez/0031/6009/live/index.html')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/dJWtJSfH/retro-bowl.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Retro Bowl</h3>
-                    <p class="text-slate-500 text-xs mb-2">Classic arcade-style NFL.</p>
+                    <h3 class="font-bold text-lg text-white">Retro Bowl</h3>
+                    <p class="text-slate-500 text-xs mb-3">Classic arcade-style NFL.</p>
                     <div class="flex gap-2"><span class="tag">Sports</span><span class="tag">Retro</span></div>
                 </div>
 
+                <!-- 6. Stickman Hook -->
+                <div class="game-card group p-4" onclick="loadStickmanHook()">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/F4b6JnSZ/stick-hook-game1.png" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">Stickman Hook</h3>
+                    <p class="text-slate-500 text-xs mb-3">Swing like Spider-Man.</p>
+                    <div class="flex gap-2"><span class="tag">Skill</span><span class="tag">Physics</span></div>
+                </div>
+
+                <!-- 7. Eggy Car -->
                 <div class="game-card group p-4" onclick="launchGame('Eggy Car', 'https://1games.io/game/eggy-car/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/2JQJMQd/eggycar.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Eggy Car</h3>
-                    <p class="text-slate-500 text-xs mb-2">Don't break the egg!</p>
+                    <h3 class="font-bold text-lg text-white">Eggy Car</h3>
+                    <p class="text-slate-500 text-xs mb-3">Don't break the egg!</p>
                     <div class="flex gap-2"><span class="tag">Driving</span><span class="tag">Casual</span></div>
                 </div>
 
+                <!-- 8. Basketball Legends -->
                 <div class="game-card group p-4" onclick="launchGame('Basketball Legends', 'https://html5.gamedistribution.com/rvvASMiM/69d78d071f704fa183d75b4114ae40ec/index.html?gd_sdk_referrer_url=https://www.basketballlegends.fun/basketball-legends')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/3yjs0jDw/basketball-legends.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Basketball Legends</h3>
-                    <p class="text-slate-500 text-xs mb-2">NBA 2-player showdown.</p>
+                    <h3 class="font-bold text-lg text-white">Basketball Legends</h3>
+                    <p class="text-slate-500 text-xs mb-3">NBA 2-player showdown.</p>
                     <div class="flex gap-2"><span class="tag">Sports</span><span class="tag">2Player</span></div>
                 </div>
 
+                <!-- 9. Polytrack -->
                 <div class="game-card group p-4" onclick="launchGame('Polytrack', 'https://html-classic.itch.zone/html/15451330/index.html')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/5x9bRwgY/polytrack-16x9-cover.avif" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Polytrack</h3>
-                    <p class="text-slate-500 text-xs mb-2">Fast racing and track building.</p>
-                    <div class="flex gap-2"><span class="tag">Racing</span><span class="tag">Building</span></div>
+                    <h3 class="font-bold text-lg text-white">Polytrack</h3>
+                    <p class="text-slate-500 text-xs mb-3">Fast racing and building.</p>
+                    <div class="flex gap-2"><span class="tag">Racing</span><span class="tag">3D</span></div>
                 </div>
 
+                <!-- 10. Geometry Dash -->
                 <div class="game-card group p-4" onclick="launchGame('Geometry Dash', 'https://1games.io/game/geometry-dash-lite/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/9mQ3RBZK/geometrydash.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Geometry Dash</h3>
-                    <p class="text-slate-500 text-xs mb-2">Sync your jumps to the beat.</p>
+                    <h3 class="font-bold text-lg text-white">Geometry Dash</h3>
+                    <p class="text-slate-500 text-xs mb-3">Sync jumps to the beat.</p>
                     <div class="flex gap-2"><span class="tag">Rhythm</span><span class="tag">Hard</span></div>
                 </div>
 
-                <div class="game-card group p-4" onclick="launchGame('FNAE', 'https://www.gameflare.com/embed/five-nights-at-epstein-s/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/21hD4v5X/fnafepstein.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Five Nights at Epsteins</h3>
-                    <p class="text-slate-500 text-xs mb-2">Can you survive the night?</p>
-                    <div class="flex gap-2"><span class="tag">Horror</span><span class="tag">Survival</span></div>
-                </div>
-
-                <div class="game-card group p-4" onclick="launchGame('Drift Boss', 'https://gamecollections.me/game/owner/drift-boss-gm/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/4ZZKCvxG/driftboss.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Drift Boss</h3>
-                    <p class="text-slate-500 text-xs mb-2">Drift like a pro.</p>
-                    <div class="flex gap-2"><span class="tag">Driving</span><span class="tag">Skill</span></div>
-                </div>
-
+                <!-- 11. Coreball -->
                 <div class="game-card group p-4" onclick="launchGame('Coreball', 'https://iogamesweb.com/play/core-ball/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/j9bPf7Q0/coreball.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Coreball</h3>
-                    <p class="text-slate-500 text-xs mb-2">Test your timing skills.</p>
-                    <div class="flex gap-2"><span class="tag">Skill</span><span class="tag">Timing</span></div>
+                    <h3 class="font-bold text-lg text-white">Coreball</h3>
+                    <p class="text-slate-500 text-xs mb-3">Test your timing skills.</p>
+                    <div class="flex gap-2"><span class="tag">Skill</span><span class="tag">Casual</span></div>
                 </div>
 
-                <div class="game-card group p-4" onclick="launchGame('Bloxorz', 'https://slope-unblocked-10x.github.io/strategy-games/bloxors/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/WbQ5ks9/Bloxorz-OG-logo-jpg.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Bloxorz</h3>
-                    <p class="text-slate-500 text-xs mb-2">Rolling cube puzzle logic.</p>
-                    <div class="flex gap-2"><span class="tag">Puzzle</span><span class="tag">Logic</span></div>
+                <!-- 12. Drift Boss -->
+                <div class="game-card group p-4" onclick="launchGame('Drift Boss', 'https://gamecollections.me/game/owner/drift-boss-gm/')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/4ZZKCvxG/driftboss.webp" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">Drift Boss</h3>
+                    <p class="text-slate-500 text-xs mb-3">Perfect drift timing.</p>
+                    <div class="flex gap-2"><span class="tag">Driving</span><span class="tag">Drift</span></div>
                 </div>
 
-                <div class="game-card group p-4" onclick="launchGame('Worlds Hardest Game', 'https://slope-unblocked-10x.github.io/action-games/worlds-hardest-game/')">
+                <!-- FNAF Series -->
+                <div class="game-card group p-4 border-2 border-red-500/20" onclick="launchGame('FNAF 6', 'https://irv77.github.io/hd_fnaf/ps/')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/VcqtTPW5/fnaf6-png.webp" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">FNAF 6</h3>
+                    <div class="flex gap-2"><span class="tag">Horror</span><span class="tag">Simulator</span></div>
+                </div>
+                <div class="game-card group p-4 border-2 border-purple-500/20" onclick="launchGame('Sister Location', 'https://irv77.github.io/hd_fnaf/sl/')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/C5VSHD0f/fnafsl-png.webp" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">Sister Location</h3>
+                    <div class="flex gap-2"><span class="tag">Horror</span><span class="tag">Survival</span></div>
+                </div>
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('FNAF 4', 'https://run3.io/popgame/fnaf/fnaf4.html')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/wNkvDc2m/fnaf4-png.jpg" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">FNAF 4</h3>
+                    <div class="flex gap-2"><span class="tag">Horror</span></div>
+                </div>
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('FNAF 3', 'https://run3.io/popgame/fnaf/fnaf3.html')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/7tq506sL/fnaf3-png.jpg" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">FNAF 3</h3>
+                    <div class="flex gap-2"><span class="tag">Horror</span></div>
+                </div>
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('FNAF 2', 'https://run3.io/popgame/fnaf/fnaf2.html')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/B2Lknypx/fnaf2-png.png" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">FNAF 2</h3>
+                    <div class="flex gap-2"><span class="tag">Horror</span></div>
+                </div>
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('FNAF 1', 'https://run3.io/popgame/fnaf/fnaf1/')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/3gtbVRb/fnaf1-png.jpg" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">FNAF 1</h3>
+                    <div class="flex gap-2"><span class="tag">Horror</span><span class="tag">Classic</span></div>
+                </div>
+
+                <!-- Rest of Library -->
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('BitLife', 'https://slope-unblocked-10x.github.io/strategy-games/bitlife/')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/QFJ1TCwr/bitlife.jpg" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">BitLife</h3>
+                    <div class="flex gap-2"><span class="tag">Sim</span><span class="tag">Text</span></div>
+                </div>
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('Worlds Hardest Game', 'https://slope-unblocked-10x.github.io/action-games/worlds-hardest-game/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/vCbnM142/Worlds-Hardest-Game-OG-logo.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Worlds Hardest Game</h3>
-                    <p class="text-slate-500 text-xs mb-2">Frustratingly difficult puzzles.</p>
-                    <div class="flex gap-2"><span class="tag">Hard</span><span class="tag">Skill</span></div>
+                    <h3 class="font-bold text-lg text-white">Hardest Game</h3>
+                    <div class="flex gap-2"><span class="tag">Skill</span><span class="tag">Rage</span></div>
                 </div>
-
-                <div class="game-card group p-4" onclick="launchGame('Terraria', 'https://slope-unblocked-10x.github.io/action-games/terraira/')">
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('Terraria', 'https://slope-unblocked-10x.github.io/action-games/terraira/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/qL7B9k8g/terraria.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Terraria</h3>
-                    <p class="text-slate-500 text-xs mb-2">Dig, fight, explore, build.</p>
-                    <div class="flex gap-2"><span class="tag">Adventure</span><span class="tag">OpenWorld</span></div>
+                    <h3 class="font-bold text-lg text-white">Terraria</h3>
+                    <div class="flex gap-2"><span class="tag">Adventure</span></div>
                 </div>
-
-                <div class="game-card group p-4" onclick="launchGame('Subway Surfers', 'https://slope-unblocked-10x.github.io/action-games/subway-surfers/')">
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('Subway Surfers', 'https://slope-unblocked-10x.github.io/action-games/subway-surfers/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/rR7BSCqr/subway-surfers-header2.avif" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Subway Surfers</h3>
-                    <p class="text-slate-500 text-xs mb-2">Infinite train hopping fun.</p>
+                    <h3 class="font-bold text-lg text-white">Subway Surfers</h3>
                     <div class="flex gap-2"><span class="tag">Runner</span></div>
                 </div>
-
-                <div class="game-card group p-4" onclick="loadSnowRider()">
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="loadSnowRider()">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/Y43mrt5S/snowrider3d.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Snow Rider 3D</h3>
-                    <p class="text-slate-500 text-xs mb-2">High-speed sled survival.</p>
-                    <div class="flex gap-2"><span class="tag">Sports</span><span class="tag">Driving</span></div>
+                    <h3 class="font-bold text-lg text-white">Snow Rider 3D</h3>
+                    <div class="flex gap-2"><span class="tag">Sports</span></div>
                 </div>
-
-                <div class="game-card group p-4" onclick="launchGame('Slope', 'https://slope-unblocked-10x.github.io/action-games/slope/')">
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('Slope', 'https://slope-unblocked-10x.github.io/action-games/slope/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/jvNVVNdD/slope.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Slope</h3>
-                    <p class="text-slate-500 text-xs mb-2">High-speed ball survival.</p>
-                    <div class="flex gap-2"><span class="tag">Skill</span></div>
+                    <h3 class="font-bold text-lg text-white">Slope</h3>
+                    <div class="flex gap-2"><span class="tag">Fast</span></div>
                 </div>
-
-                <div class="game-card group p-4" onclick="launchGame('Ragdoll Archers', 'https://jasongamesdev.github.io/ragdoll-archers/')">
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('Ragdoll Archers', 'https://jasongamesdev.github.io/ragdoll-archers/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/7dkK7ZfJ/ragdollarchers.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Ragdoll Archers</h3>
-                    <p class="text-slate-500 text-xs mb-2">Physics-based bow combat.</p>
-                    <div class="flex gap-2"><span class="tag">Action</span><span class="tag">Physics</span></div>
+                    <h3 class="font-bold text-lg text-white">Ragdoll Archers</h3>
+                    <div class="flex gap-2"><span class="tag">Action</span></div>
                 </div>
-
-                <div class="game-card group p-4" onclick="launchGame('BitLife', 'https://slope-unblocked-10x.github.io/strategy-games/bitlife/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/QFJ1TCwr/bitlife.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">BitLife</h3>
-                    <p class="text-slate-500 text-xs mb-2">Life simulator text adventure.</p>
-                    <div class="flex gap-2"><span class="tag">Simulator</span><span class="tag">Text</span></div>
-                </div>
-
-                <div class="game-card group p-4" onclick="loadBasketballRandom()">
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="loadBasketballRandom()">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/fdwhjTkR/basket-random-16x9-cover.avif" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Basket Random</h3>
-                    <p class="text-slate-500 text-xs mb-2">Hilarious physics basketball.</p>
-                    <div class="flex gap-2"><span class="tag">Sports</span><span class="tag">Physics</span></div>
+                    <h3 class="font-bold text-lg text-white">Basket Random</h3>
+                    <div class="flex gap-2"><span class="tag">Physics</span></div>
                 </div>
-
-                <!-- FNAF ROW -->
-                <div class="game-card group p-4 border-2 border-red-500/40" onclick="launchGame('FNAF 6', 'https://app-282492.games.s3.yandex.net/282492/xbxwi2niqlw5vu1avyfwg544ounfjfzi_brotli/index.html?sdk=%2Fsdk%2F_%2Fv2.249809e6675065e2c7e5.js#origin=https%3A%2F%2Fplayhop.com&app-id=282492&device-type=desktop')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/VcqtTPW5/fnaf6-png.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">FNAF 6</h3>
-                    <p class="text-slate-500 text-xs mb-2">Manage your own pizzeria.</p>
+                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('Bloxorz', 'https://slope-unblocked-10x.github.io/strategy-games/bloxors/')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/WbQ5ks9/Bloxorz-OG-logo-jpg.webp" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">Bloxorz</h3>
+                    <div class="flex gap-2"><span class="tag">Puzzle</span></div>
                 </div>
-
-                <div class="game-card group p-4 border-2 border-purple-500/40" onclick="launchGame('Sister Location', 'https://irv77.github.io/hd_fnaf/sl/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/C5VSHD0f/fnafsl-png.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Sister Location</h3>
-                    <p class="text-slate-500 text-xs mb-2">Circus Baby's nightmare.</p>
-                </div>
-
-                <div class="game-card group p-4" onclick="launchGame('FNAF 4', 'https://run3.io/popgame/fnaf/fnaf4.html')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/wNkvDc2m/fnaf4-png.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">FNAF 4</h3>
-                    <p class="text-slate-500 text-xs mb-2">The horror follows you home.</p>
-                </div>
-
-                <div class="game-card group p-4" onclick="launchGame('FNAF 3', 'https://run3.io/popgame/fnaf/fnaf3.html')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/7tq506sL/fnaf3-png.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">FNAF 3</h3>
-                    <p class="text-slate-500 text-xs mb-2">Springtrap is watching.</p>
-                </div>
-
-                <div class="game-card group p-4" onclick="launchGame('FNAF 2', 'https://run3.io/popgame/fnaf/fnaf2.html')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/B2Lknypx/fnaf2-png.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">FNAF 2</h3>
-                    <p class="text-slate-500 text-xs mb-2">No doors, just a mask.</p>
-                </div>
-
-                <div class="game-card group p-4" onclick="launchGame('FNAF 1', 'https://run3.io/popgame/fnaf/fnaf1/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/3gtbVRb/fnaf1-png.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">FNAF 1</h3>
-                    <p class="text-slate-500 text-xs mb-2">The classic survival horror.</p>
+                <div class="game-card group p-4 border-2 border-red-500/20" onclick="launchGame('Red Ball 4', 'https://playredball4.com/wp-content/uploads/games/redball4/')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/rRVfB5Ls/orig.png" class="thumb-img"></div>
+                    <h3 class="font-bold text-lg text-white">Red Ball 4</h3>
+                    <div class="flex gap-2"><span class="tag">Platformer</span></div>
                 </div>
 
             </div>
         </div>
 
-        <!-- PLAYER PAGE -->
+        <!-- Player Page -->
         <div id="player-page" class="hidden">
             <div class="panic-btn" onclick="panic()"><i class="fa-solid fa-shield-halved text-2xl"></i></div>
-            <div class="flex justify-between items-center mb-4">
-                <button onclick="showPage('home')" class="flex items-center space-x-2 text-indigo-400 hover:text-white transition font-bold uppercase"><i class="fa-solid fa-arrow-left"></i> <span>Close</span></button>
-                <h2 id="active-title" class="text-2xl font-bold uppercase tracking-tighter text-indigo-400">Loading...</h2>
+            <div class="flex justify-between items-center mb-4 text-white uppercase font-bold">
+                <button onclick="showPage('home')" class="hover:text-indigo-400 transition"><i class="fa-solid fa-arrow-left"></i> Close</button>
+                <h2 id="active-title" class="text-xl tracking-tighter">Loading...</h2>
                 <div class="w-10"></div>
             </div>
             <div class="label-ads">-ADVERTISEMENTS-</div>
             <div id="game-container" class="relative w-full shadow-2xl overflow-hidden rounded-[30px] border-4 border-white/5 bg-black flex justify-center items-center" style="height: 85vh;"></div>
-            <div class="ads mt-8">
-                <div class="label-ads">-ADVERTISEMENTS-</div>
-                <div class="detail-ads flex justify-center">
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2485663923316878" crossorigin="anonymous"></script>
-                    <ins class="adsbygoogle" style="display:block; width:100%; max-width:728px" data-ad-client="ca-pub-2485663923316878" data-ad-slot="7803419154" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            <div class="mt-12 max-w-4xl mx-auto text-white">
+                <h3 class="text-3xl font-800 mb-6 uppercase tracking-tighter text-indigo-400">Discussion</h3>
+                <div class="glass p-6 rounded-[30px] mb-8 border border-white/10">
+                    <textarea id="commentInput" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl mb-4 text-white outline-none" placeholder="Leave a clean comment..."></textarea>
+                    <button onclick="postComment()" class="bg-indigo-600 px-10 py-3 rounded-xl font-bold uppercase hover:bg-indigo-500 transition">Post</button>
                 </div>
+                <div id="comment-list" class="space-y-4"></div>
             </div>
         </div>
 
-        <!-- REQUEST PAGE -->
+        <!-- Request Page -->
         <div id="request-page" class="hidden max-w-2xl mx-auto py-12">
             <div class="glass p-10 rounded-[40px]">
-                <h2 class="text-4xl font-800 mb-6 text-center uppercase">Request Game</h2>
+                <h2 class="text-4xl font-800 mb-6 text-center uppercase text-white">Request Game</h2>
                 <form id="reqForm" class="space-y-6">
-                    <input type="text" id="reqInput" required class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Game Title">
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 py-5 rounded-2xl font-bold shadow-lg transition uppercase">Submit</button>
+                    <input type="text" id="reqInput" required class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 text-white outline-none" placeholder="Game Title">
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 py-5 rounded-2xl font-bold transition uppercase text-white shadow-lg">Submit</button>
                 </form>
             </div>
         </div>
@@ -364,56 +330,97 @@
     </footer>
 
     <script>
-        function panic() { window.location.replace("https://membean.com/dashboard"); }
+        const censored = ['badword1', 'badword2', 'idiot', 'stupid']; 
+        let currentGame = "";
 
-        // COMMAND LOGIC
-        let keys = '';
-        window.addEventListener('keydown', (e) => {
-            keys += e.key.toLowerCase();
-            if (keys.endsWith('admin')) { toggleAdmin(); keys = ''; }
-            if (keys.endsWith('lock')) { toggleMaintenance(); keys = ''; }
-            if (keys.endsWith('panic')) { panic(); }
-            if (keys.length > 10) keys = keys.substring(5);
-        });
+        function checkClean(text) { return !censored.some(word => text.toLowerCase().includes(word)) && text.length >= 3; }
 
-        function toggleAdmin() {
-            const panel = document.getElementById('admin-panel');
-            panel.classList.toggle('hidden');
-            if (!panel.classList.contains('hidden')) renderRequests();
+        function saveUsername() {
+            const val = document.getElementById('usernameInput').value.trim();
+            if (!checkClean(val)) { document.getElementById('loginError').classList.remove('hidden'); return; }
+            localStorage.setItem('pillowUsername', val);
+            initUserDisplay();
         }
 
-        function toggleMaintenance() {
-            document.getElementById('maintenance-screen').classList.toggle('hidden');
-            localStorage.setItem('maintenance', document.getElementById('maintenance-screen').classList.contains('hidden') ? 'off' : 'on');
-        }
-
-        // BROADCAST LOGIC
-        function postBroadcast() {
-            const val = document.getElementById('broadcastInput').value;
-            localStorage.setItem('pillowBroadcast', val);
-            applyBroadcast();
-        }
-        function clearBroadcast() {
-            localStorage.removeItem('pillowBroadcast');
-            applyBroadcast();
-        }
-        function applyBroadcast() {
-            const msg = localStorage.getItem('pillowBroadcast');
-            const bar = document.getElementById('broadcast-bar');
-            if (msg) {
-                bar.classList.remove('hidden');
-                document.getElementById('broadcast-text').innerText = msg;
+        function initUserDisplay() {
+            const user = localStorage.getItem('pillowUsername');
+            if (user) {
+                document.getElementById('userDisplay').innerText = `ID: ${user}`;
+                document.getElementById('userDisplay').classList.remove('hidden');
+                document.getElementById('login-overlay').classList.add('hidden');
             } else {
-                bar.classList.add('hidden');
+                document.getElementById('login-overlay').classList.remove('hidden');
             }
         }
 
-        // REQUEST STORAGE
+        function vote(index, type) {
+            let allComments = JSON.parse(localStorage.getItem('pillowComments') || '{}');
+            if (type === 'like') allComments[currentGame][index].likes++;
+            else allComments[currentGame][index].dislikes++;
+            localStorage.setItem('pillowComments', JSON.stringify(allComments));
+            renderComments();
+        }
+
+        function postComment() {
+            const text = document.getElementById('commentInput').value.trim();
+            const user = localStorage.getItem('pillowUsername');
+            if (!text || !checkClean(text)) return;
+            let allComments = JSON.parse(localStorage.getItem('pillowComments') || '{}');
+            if (!allComments[currentGame]) allComments[currentGame] = [];
+            allComments[currentGame].push({ user, text, date: new Date().toLocaleDateString(), likes: 0, dislikes: 0 });
+            localStorage.setItem('pillowComments', JSON.stringify(allComments));
+            document.getElementById('commentInput').value = "";
+            renderComments();
+        }
+
+        function renderComments() {
+            const list = document.getElementById('comment-list');
+            const allComments = JSON.parse(localStorage.getItem('pillowComments') || '{}');
+            const logs = allComments[currentGame] || [];
+            list.innerHTML = logs.map((c, i) => `
+                <div class="comment-box text-white">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-indigo-400 font-bold">${c.user}</span>
+                        <span class="text-slate-600 text-xs">${c.date}</span>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-4">${c.text}</p>
+                    <div class="flex gap-4">
+                        <span class="vote-btn" onclick="vote(${i}, 'like')">👍 ${c.likes}</span>
+                        <span class="vote-btn" onclick="vote(${i}, 'dislike')">👎 ${c.dislikes}</span>
+                    </div>
+                </div>
+            `).reverse().join('');
+        }
+
+        let keys = '';
+        window.addEventListener('keydown', (e) => {
+            keys += e.key.toLowerCase();
+            if (keys.endsWith('admin1919')) { toggleAdmin(); keys = ''; }
+            if (keys.length > 20) keys = keys.substring(10);
+        });
+
+        function deleteRequest(idx) {
+            let current = JSON.parse(localStorage.getItem('pillowRequests') || '[]');
+            current.splice(idx, 1);
+            localStorage.setItem('pillowRequests', JSON.stringify(current));
+            renderRequests();
+        }
+
+        function toggleAdmin() { document.getElementById('admin-panel').classList.toggle('hidden'); if (!document.getElementById('admin-panel').classList.contains('hidden')) renderRequests(); }
+        function toggleMaintenance() { document.getElementById('maintenance-screen').classList.toggle('hidden'); localStorage.setItem('maintenance', document.getElementById('maintenance-screen').classList.contains('hidden') ? 'on' : 'off'); document.getElementById('lockBtn').innerText = document.getElementById('maintenance-screen').classList.contains('hidden') ? 'Lock' : 'Unlock'; }
+        function postBroadcast() { localStorage.setItem('pillowBroadcast', document.getElementById('broadcastInput').value); applyBroadcast(); }
+        function clearBroadcast() { localStorage.removeItem('pillowBroadcast'); applyBroadcast(); }
+        function applyBroadcast() {
+            const msg = localStorage.getItem('pillowBroadcast');
+            const bar = document.getElementById('broadcast-bar');
+            if (msg) { bar.classList.remove('hidden'); document.getElementById('broadcast-text').innerText = msg; }
+            else bar.classList.add('hidden');
+        }
+
         document.getElementById('reqForm').onsubmit = (e) => {
             e.preventDefault();
-            const val = document.getElementById('reqInput').value;
             let current = JSON.parse(localStorage.getItem('pillowRequests') || '[]');
-            current.push({name: val, date: new Date().toLocaleString()});
+            current.push({name: document.getElementById('reqInput').value, user: localStorage.getItem('pillowUsername'), date: new Date().toLocaleString()});
             localStorage.setItem('pillowRequests', JSON.stringify(current));
             alert('Request Submitted!');
             document.getElementById('reqInput').value = '';
@@ -421,15 +428,19 @@
         };
 
         function renderRequests() {
-            const list = document.getElementById('request-list');
             const data = JSON.parse(localStorage.getItem('pillowRequests') || '[]');
-            list.innerHTML = data.length === 0 ? '<p class="text-slate-500 italic">No requests.</p>' : 
-                data.map(r => `<div class="bg-slate-800 p-4 rounded-2xl mb-2"><div class="text-indigo-400 font-bold">${r.name}</div><div class="text-slate-500 text-xs">${r.date}</div></div>`).join('');
+            document.getElementById('request-list').innerHTML = data.map((r, i) => `
+                <div class="bg-slate-800 p-4 rounded-xl flex justify-between items-center text-white">
+                    <div><div class="text-indigo-400 font-bold">${r.name}</div><div class="text-slate-500 text-[10px]">By: ${r.user} | ${r.date}</div></div>
+                    <button onclick="deleteRequest(${i})" class="text-red-500 hover:text-white"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
         }
 
         function clearRequests() { localStorage.removeItem('pillowRequests'); renderRequests(); }
+        function clearAllComments() { localStorage.removeItem('pillowComments'); renderComments(); }
+        function panic() { window.location.replace("https://membean.com/dashboard"); }
 
-        // PAGE LOADING
         function showPage(page) {
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('player-page').classList.add('hidden');
@@ -440,6 +451,7 @@
         }
 
         function launchGame(title, url, is50 = false) {
+            currentGame = title;
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('player-page').classList.remove('hidden');
             document.getElementById('active-title').innerText = title;
@@ -450,10 +462,10 @@
             iframe.style.width = is50 ? "50%" : "100%";
             iframe.style.height = is50 ? "50%" : "100%";
             iframe.setAttribute("allowfullscreen", "true");
-            iframe.setAttribute("scrolling", "no");
-            iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen; monetization; gamepad; keyboard-map *; xr-spatial-tracking; web-share; display-capture; cross-origin-isolated");
+            iframe.setAttribute("allow", "accelerometer; autoplay; fullscreen; cross-origin-isolated");
             iframe.setAttribute("sandbox", "allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads");
             container.appendChild(iframe);
+            renderComments();
             try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
         }
 
@@ -461,13 +473,7 @@
         function loadBasketballRandom() { launchGame("Basketball Random", "https://html5.gamedistribution.com/bf1268dccb5d43e7970bb3edaa54afc8/?gd_sdk_referrer_url=https://basketrandom.io/basket-random"); }
         function loadSnowRider() { launchGame("Snow Rider 3D", "https://html5.gamedistribution.com/3b79a8537ebc414fb4f9672a9b8c68c8/?gd_sdk_referrer_url=https://snowrider3d.com/snow-rider-3d"); }
 
-        // ON LOAD
-        window.onload = () => {
-            applyBroadcast();
-            if (localStorage.getItem('maintenance') === 'on') {
-                document.getElementById('maintenance-screen').classList.remove('hidden');
-            }
-        };
+        window.onload = () => { applyBroadcast(); initUserDisplay(); if (localStorage.getItem('maintenance') === 'on') document.getElementById('maintenance-screen').classList.remove('hidden'); };
     </script>
 </body>
 </html>
