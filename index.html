@@ -45,20 +45,19 @@
             transition: all 0.2s;
         }
         .panic-btn:hover { transform: translateY(-50%) scale(1.1); background: #f87171; }
-        .panic-btn:active { transform: translateY(-50%) scale(0.9); }
     </style>
 </head>
 <body>
 
-    <!-- Admin Panel -->
+    <!-- Admin Panel (Type 'admin') -->
     <div id="admin-panel" class="hidden">
         <div class="max-w-4xl mx-auto">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-4xl font-800 text-indigo-400 uppercase">Request Dashboard</h2>
+                <h2 class="text-4xl font-800 text-indigo-400 uppercase">Admin Dashboard</h2>
                 <button onclick="toggleAdmin()" class="bg-red-500 px-6 py-2 rounded-full font-bold">CLOSE</button>
             </div>
             <div id="request-list" class="space-y-4"></div>
-            <button onclick="clearRequests()" class="mt-10 text-slate-500 underline text-sm">Clear Memory</button>
+            <button onclick="clearRequests()" class="mt-10 text-slate-500 underline text-sm">Clear Logs</button>
         </div>
     </div>
 
@@ -77,184 +76,185 @@
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-12">
-        
         <div id="home-page">
             <div class="mb-12 text-center md:text-left">
                 <h1 class="text-5xl font-800 mb-3 tracking-tight">Stay <span class="text-indigo-500">Comfy</span>.</h1>
-                <p class="text-slate-400 italic">"29 Games Online - Emergency Panic Button Enabled."</p>
+                <p class="text-slate-400 italic">"30 Games Online - Thumbnails & Subtitles Locked."</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 
-                <!-- 1. Red Ball 4 -->
-                <div class="game-card group p-4 border-2 border-red-500/40" onclick="launchGame('Red Ball 4', 'https://playredball4.com/wp-content/uploads/games/redball4/')">
+                <!-- 1. Crossy Road (NEW) -->
+                <div class="game-card group p-4 border-2 border-indigo-500/40" onclick="launchGame('Crossy Road', 'https://azgames.io/game/crossy-road/')">
+                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden">
+                        <img src="https://i.ibb.co/DSk9fJH/crossyroad.png" class="thumb-img">
+                    </div>
+                    <h3 class="font-bold text-lg text-indigo-400">Crossy Road</h3>
+                    <p class="text-slate-500 text-xs">Why did the chicken cross the road?</p>
+                </div>
+
+                <!-- 2. Red Ball 4 -->
+                <div class="game-card group p-4" onclick="launchGame('Red Ball 4', 'https://playredball4.com/wp-content/uploads/games/redball4/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/rRVfB5Ls/orig.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg text-red-400">Red Ball 4</h3>
-                    <p class="text-slate-500 text-xs">Roll, jump, and bounce through levels.</p>
+                    <h3 class="font-bold text-lg">Red Ball 4</h3>
+                    <p class="text-slate-500 text-xs">Roll and jump to save the world.</p>
                 </div>
 
-                <!-- 2. Stickman Hook (50% Size) -->
-                <div class="game-card group p-4 border-2 border-indigo-500/40" onclick="loadStickmanHook()">
+                <!-- 3. Stickman Hook (50% size logic) -->
+                <div class="game-card group p-4" onclick="loadStickmanHook()">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/F4b6JnSZ/stick-hook-game1.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Stickman Hook</h3>
-                    <p class="text-slate-500 text-xs">Swing and jump through the levels.</p>
+                    <h3 class="font-bold text-lg">Stickman Hook</h3>
+                    <p class="text-slate-500 text-xs">Swing like Spider-Man.</p>
                 </div>
 
-                <!-- 3. Rooftop Snipers -->
-                <div class="game-card group p-4 border-2 border-indigo-500/20" onclick="launchGame('Rooftop Snipers', 'https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/')">
+                <!-- 4. Rooftop Snipers -->
+                <div class="game-card group p-4" onclick="launchGame('Rooftop Snipers', 'https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/msT16PH/unnamed.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Rooftop Snipers</h3>
+                    <h3 class="font-bold text-lg">Rooftop Snipers</h3>
                     <p class="text-slate-500 text-xs">Duel mode on the roof.</p>
                 </div>
 
-                <!-- 4. Flappy Bird -->
+                <!-- 5. Flappy Bird -->
                 <div class="game-card group p-4" onclick="launchGame('Flappy Bird', 'https://class811.github.io/g8/flappy-bird-origin')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/mFSR39tb/flappybird.png" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg text-yellow-400">Flappy Bird</h3>
+                    <h3 class="font-bold text-lg">Flappy Bird</h3>
                     <p class="text-slate-500 text-xs">The impossible flapping challenge.</p>
                 </div>
 
-                <!-- 5. Monster Tracks -->
+                <!-- 6. Monster Tracks -->
                 <div class="game-card group p-4" onclick="launchGame('Monster Tracks', 'https://class811.github.io/g5/monster-tracks')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/TBR30PKS/Monster-Tracks-Games.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Monster Tracks</h3>
                     <p class="text-slate-500 text-xs">Crazy off-road driving.</p>
                 </div>
 
-                <!-- 6. Retro Bowl College -->
+                <!-- 7. Retro Bowl College -->
                 <div class="game-card group p-4" onclick="launchGame('Retro Bowl College', 'https://game.play-retro-bowl.com/retro-bowl-games/retro-bowl-college/retro-bowl-college.html')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/JjCxbNgw/retro-bowl-college.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Retro Bowl College</h3>
                     <p class="text-slate-500 text-xs">Manage your campus team.</p>
                 </div>
 
-                <!-- 7. Retro Bowl -->
+                <!-- 8. Retro Bowl -->
                 <div class="game-card group p-4" onclick="launchGame('Retro Bowl', 'https://game316009.konggames.com/gamez/0031/6009/live/index.html')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/dJWtJSfH/retro-bowl.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Retro Bowl</h3>
                     <p class="text-slate-500 text-xs">Classic arcade-style NFL.</p>
                 </div>
 
-                <!-- 8. Eggy Car -->
+                <!-- 9. Eggy Car -->
                 <div class="game-card group p-4" onclick="launchGame('Eggy Car', 'https://1games.io/game/eggy-car/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/2JQJMQd/eggycar.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Eggy Car</h3>
                     <p class="text-slate-500 text-xs">Don't break the egg!</p>
                 </div>
 
-                <!-- 9. Basketball Legends -->
+                <!-- 10. Basketball Legends -->
                 <div class="game-card group p-4" onclick="launchGame('Basketball Legends', 'https://html5.gamedistribution.com/rvvASMiM/69d78d071f704fa183d75b4114ae40ec/index.html?gd_sdk_referrer_url=https://www.basketballlegends.fun/basketball-legends')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/3yjs0jDw/basketball-legends.png" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Basketball Legends</h3>
                     <p class="text-slate-500 text-xs">NBA 2-player showdown.</p>
                 </div>
 
-                <!-- 10. Polytrack -->
+                <!-- 11. Polytrack -->
                 <div class="game-card group p-4" onclick="launchGame('Polytrack', 'https://html-classic.itch.zone/html/15451330/index.html')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/5x9bRwgY/polytrack-16x9-cover.avif" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Polytrack</h3>
                     <p class="text-slate-500 text-xs">Fast racing and track building.</p>
                 </div>
 
-                <!-- 11. Geometry Dash -->
+                <!-- 12. Geometry Dash -->
                 <div class="game-card group p-4" onclick="launchGame('Geometry Dash', 'https://1games.io/game/geometry-dash-lite/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/9mQ3RBZK/geometrydash.webp" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Geometry Dash</h3>
                     <p class="text-slate-500 text-xs">Sync your jumps to the beat.</p>
                 </div>
 
-                <!-- 12. Five Nights at Epsteins -->
+                <!-- 13. FNAE -->
                 <div class="game-card group p-4" onclick="launchGame('Five Nights at Epsteins', 'https://www.gameflare.com/embed/five-nights-at-epstein-s/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/21hD4v5X/fnafepstein.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Five Nights at Epsteins</h3>
+                    <h3 class="font-bold text-lg">FNAE</h3>
                     <p class="text-slate-500 text-xs">Can you survive the night?</p>
                 </div>
 
-                <!-- 13. Drift Boss -->
+                <!-- 14. Drift Boss -->
                 <div class="game-card group p-4" onclick="launchGame('Drift Boss', 'https://gamecollections.me/game/owner/drift-boss-gm/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/4ZZKCvxG/driftboss.webp" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Drift Boss</h3>
                     <p class="text-slate-500 text-xs">Drift like a pro.</p>
                 </div>
 
-                <!-- 14. Coreball -->
+                <!-- 15. Coreball -->
                 <div class="game-card group p-4" onclick="launchGame('Coreball', 'https://iogamesweb.com/play/core-ball/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/j9bPf7Q0/coreball.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Coreball</h3>
                     <p class="text-slate-500 text-xs">Test your timing skills.</p>
                 </div>
 
-                <!-- 15. Bloxorz -->
+                <!-- 16. Bloxorz -->
                 <div class="game-card group p-4" onclick="launchGame('Bloxorz', 'https://slope-unblocked-10x.github.io/strategy-games/bloxors/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/WbQ5ks9/Bloxorz-OG-logo-jpg.webp" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Bloxorz</h3>
                     <p class="text-slate-500 text-xs">Rolling cube puzzle logic.</p>
                 </div>
 
-                <!-- 16. World's Hardest Game -->
+                <!-- 17. World's Hardest Game -->
                 <div class="game-card group p-4" onclick="launchGame('Worlds Hardest Game', 'https://slope-unblocked-10x.github.io/action-games/worlds-hardest-game/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/vCbnM142/Worlds-Hardest-Game-OG-logo.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Worlds Hardest Game</h3>
                     <p class="text-slate-500 text-xs">Frustratingly difficult puzzles.</p>
                 </div>
 
-                <!-- 17. Terraria -->
+                <!-- 18. Terraria -->
                 <div class="game-card group p-4" onclick="launchGame('Terraria', 'https://slope-unblocked-10x.github.io/action-games/terraira/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/qL7B9k8g/terraria.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Terraria</h3>
                     <p class="text-slate-500 text-xs">Dig, fight, explore, build.</p>
                 </div>
 
-                <!-- 18. Subway Surfers -->
+                <!-- 19. Subway Surfers -->
                 <div class="game-card group p-4" onclick="launchGame('Subway Surfers', 'https://slope-unblocked-10x.github.io/action-games/subway-surfers/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/rR7BSCqr/subway-surfers-header2.avif" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Subway Surfers</h3>
-                    <p class="text-slate-500 text-xs">Infinite train hopping fun.</p>
+                    <p class="text-slate-500 text-xs">Train hopping runner.</p>
                 </div>
 
-                <!-- 19. Snow Rider 3D -->
+                <!-- 20. Snow Rider 3D -->
                 <div class="game-card group p-4" onclick="loadSnowRider()">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/Y43mrt5S/snowrider3d.webp" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg text-indigo-400">Snow Rider 3D</h3>
-                    <p class="text-slate-500 text-xs">High-speed sled survival.</p>
+                    <h3 class="font-bold text-lg">Snow Rider 3D</h3>
+                    <p class="text-slate-500 text-xs">Winter sled survival.</p>
                 </div>
 
-                <!-- 20. Slope -->
+                <!-- 21. Slope -->
                 <div class="game-card group p-4" onclick="launchGame('Slope', 'https://slope-unblocked-10x.github.io/action-games/slope/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/jvNVVNdD/slope.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Slope</h3>
                     <p class="text-slate-500 text-xs">High-speed ball survival.</p>
                 </div>
 
-                <!-- 21. Ragdoll Archers -->
-                <div class="game-card group p-4" onclick="launchGame('Ragdoll Archers', 'https://jasongamesdev.github.io/ragdoll-archers/')">
-                    <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/7dkK7ZfJ/ragdollarchers.jpg" class="thumb-img"></div>
-                    <h3 class="font-bold text-lg">Ragdoll Archers</h3>
-                    <p class="text-slate-500 text-xs">Physics-based bow combat.</p>
-                </div>
-
                 <!-- 22. BitLife -->
                 <div class="game-card group p-4" onclick="launchGame('BitLife', 'https://slope-unblocked-10x.github.io/strategy-games/bitlife/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/QFJ1TCwr/bitlife.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">BitLife</h3>
-                    <p class="text-slate-500 text-xs">Life simulator text adventure.</p>
+                    <p class="text-slate-500 text-xs">Live a thousand different lives.</p>
                 </div>
 
                 <!-- 23. Basket Random -->
                 <div class="game-card group p-4" onclick="loadBasketballRandom()">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/fdwhjTkR/basket-random-16x9-cover.avif" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Basket Random</h3>
-                    <p class="text-slate-500 text-xs">Hilarious physics basketball.</p>
+                    <p class="text-slate-500 text-xs">Crazy physics basketball.</p>
                 </div>
 
                 <!-- FNAF Series -->
-                <div class="game-card group p-4 border-2 border-red-500/40" onclick="launchGame('FNAF 6', 'https://app-282492.games.s3.yandex.net/282492/xbxwi2niqlw5vu1avyfwg544ounfjfzi_brotli/index.html?sdk=%2Fsdk%2F_%2Fv2.249809e6675065e2c7e5.js#origin=https%3A%2F%2Fplayhop.com&app-id=282492&device-type=desktop')">
+                <div class="game-card group p-4" onclick="launchGame('FNAF 6', 'https://irv77.github.io/hd_fnaf/ps/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/VcqtTPW5/fnaf6-png.webp" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">FNAF 6</h3>
-                    <p class="text-slate-500 text-xs">Manage your own pizzeria.</p>
+                    <p class="text-slate-500 text-xs">Pizzeria Simulator.</p>
                 </div>
 
-                <div class="game-card group p-4 border-2 border-purple-500/40" onclick="launchGame('Sister Location', 'https://run3.io/popgame/fnaf/fnafsl.html')">
+                <div class="game-card group p-4" onclick="launchGame('Sister Location', 'https://irv77.github.io/hd_fnaf/sl/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/C5VSHD0f/fnafsl-png.webp" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Sister Location</h3>
                     <p class="text-slate-500 text-xs">Circus Baby's nightmare.</p>
@@ -281,7 +281,7 @@
                 <div class="game-card group p-4" onclick="launchGame('FNAF 1', 'https://run3.io/popgame/fnaf/fnaf1/')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/3gtbVRb/fnaf1-png.jpg" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">FNAF 1</h3>
-                    <p class="text-slate-500 text-xs">The classic survival horror.</p>
+                    <p class="text-slate-500 text-xs">Where it started.</p>
                 </div>
 
             </div>
@@ -289,16 +289,10 @@
 
         <!-- PLAYER PAGE -->
         <div id="player-page" class="hidden">
-            <!-- PANIC BUTTON -->
-            <div class="panic-btn" onclick="panic()" title="Panic Button">
-                <i class="fa-solid fa-shield-halved text-2xl"></i>
-            </div>
-
+            <div class="panic-btn" onclick="panic()"><i class="fa-solid fa-shield-halved text-2xl"></i></div>
             <div class="flex justify-between items-center mb-4">
-                <button onclick="showPage('home')" class="flex items-center space-x-2 text-indigo-400 hover:text-white transition font-bold uppercase tracking-widest">
-                    <i class="fa-solid fa-arrow-left"></i> <span>Close Game</span>
-                </button>
-                <h2 id="active-title" class="text-2xl font-bold uppercase tracking-tighter text-indigo-400 text-center">Loading...</h2>
+                <button onclick="showPage('home')" class="flex items-center space-x-2 text-indigo-400 hover:text-white transition font-bold uppercase"><i class="fa-solid fa-arrow-left"></i> <span>Close</span></button>
+                <h2 id="active-title" class="text-2xl font-bold uppercase tracking-tighter text-indigo-400">Loading...</h2>
                 <div class="w-10"></div>
             </div>
             <div class="label-ads">-ADVERTISEMENTS-</div>
@@ -329,20 +323,12 @@
     </footer>
 
     <script>
-        // PANIC BUTTON LOGIC
-        function panic() {
-            // Redirects current tab to Membean and removes the game from history
-            window.location.replace("https://membean.com/login");
-        }
+        function panic() { window.location.replace("https://membean.com/dashboard"); }
 
-        // ADMIN COMMAND LOGIC
         let keys = '';
         window.addEventListener('keydown', (e) => {
             keys += e.key.toLowerCase();
-            if (keys.endsWith('admin')) {
-                toggleAdmin();
-                keys = '';
-            }
+            if (keys.endsWith('admin')) { toggleAdmin(); keys = ''; }
             if (keys.length > 10) keys = keys.substring(5);
         });
 
@@ -352,7 +338,6 @@
             if (!panel.classList.contains('hidden')) renderRequests();
         }
 
-        // STORAGE LOGIC
         document.getElementById('reqForm').onsubmit = (e) => {
             e.preventDefault();
             const val = document.getElementById('reqInput').value;
@@ -367,62 +352,35 @@
         function renderRequests() {
             const list = document.getElementById('request-list');
             const data = JSON.parse(localStorage.getItem('pillowRequests') || '[]');
-            if (data.length === 0) {
-                list.innerHTML = '<p class="text-slate-500 italic text-center">No requests found.</p>';
-                return;
-            }
-            list.innerHTML = data.map(r => `
-                <div class="bg-slate-800 p-4 rounded-2xl border border-white/5 mb-2">
-                    <div class="text-indigo-400 font-bold text-lg">${r.name}</div>
-                    <div class="text-slate-500 text-xs">${r.date}</div>
-                </div>
-            `).join('');
+            list.innerHTML = data.length === 0 ? '<p class="text-slate-500 italic">No requests.</p>' : 
+                data.map(r => `<div class="bg-slate-800 p-4 rounded-2xl mb-2"><div class="text-indigo-400 font-bold">${r.name}</div><div class="text-slate-500 text-xs">${r.date}</div></div>`).join('');
         }
 
-        function clearRequests() {
-            localStorage.removeItem('pillowRequests');
-            renderRequests();
-        }
+        function clearRequests() { localStorage.removeItem('pillowRequests'); renderRequests(); }
 
         function showPage(page) {
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('player-page').classList.add('hidden');
             document.getElementById('request-page').classList.add('hidden');
-            if (page === 'home') {
-                document.getElementById('home-page').classList.remove('hidden');
-                document.getElementById('game-container').innerHTML = ""; 
-            } else if (page === 'request') {
-                document.getElementById('request-page').classList.remove('hidden');
-            }
+            if (page === 'home') { document.getElementById('home-page').classList.remove('hidden'); document.getElementById('game-container').innerHTML = ""; }
+            else if (page === 'request') { document.getElementById('request-page').classList.remove('hidden'); }
             window.scrollTo(0,0);
         }
 
-        function launchGame(title, url, isCustomSize = false) {
+        function launchGame(title, url, is50 = false) {
             document.getElementById('home-page').classList.add('hidden');
             document.getElementById('player-page').classList.remove('hidden');
             document.getElementById('active-title').innerText = title;
             const container = document.getElementById('game-container');
             container.innerHTML = ""; 
-            
             const iframe = document.createElement('iframe');
-            iframe.id = "gameframe";
-            iframe.src = url;
+            iframe.id = "gameframe"; iframe.src = url;
+            iframe.style.width = is50 ? "50%" : "100%";
+            iframe.style.height = is50 ? "50%" : "100%";
             iframe.setAttribute("allowfullscreen", "true");
             iframe.setAttribute("scrolling", "no");
-            
-            if (isCustomSize) {
-                iframe.style.width = "50%";
-                iframe.style.height = "50%";
-            } else {
-                iframe.style.width = "100%";
-                iframe.style.height = "100%";
-            }
-            
-            iframe.style.border = "none";
-            iframe.setAttribute("allow", "autoplay; fullscreen; camera; focus-without-user-activation *; monetization; gamepad; keyboard-map *; xr-spatial-tracking; web-share; display-capture; microphone; accelerometer; magnetometer; gyroscope;");
+            iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen; monetization; gamepad; keyboard-map *; xr-spatial-tracking; web-share; display-capture; cross-origin-isolated");
             iframe.setAttribute("sandbox", "allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads");
-            iframe.setAttribute("playsinline", "");
-            
             container.appendChild(iframe);
             try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
         }
