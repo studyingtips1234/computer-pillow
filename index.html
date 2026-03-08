@@ -459,7 +459,7 @@
         }
 
         function toggleAdmin() { document.getElementById('admin-panel').classList.add('hidden'); }
-        function toggleMaintenance() { if(db) db.ref('settings/maintenance').set(document.getElementById('lockBtn').innerText === "Lock"); }
+        function toggleMaintenance() { document.getElementById('maintenance-screen').classList.toggle('hidden'); }
         function postBroadcast() { if(db) db.ref('settings/broadcast').set(document.getElementById('broadcastInput').value); }
         function clearRequests() { if(db) db.ref('requests').remove(); }
         function clearAllComments() { if(db) db.ref('comments').remove(); }
