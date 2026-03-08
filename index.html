@@ -421,7 +421,7 @@
         let keys = '';
         window.addEventListener('keydown', (e) => {
             keys += e.key.toLowerCase();
-            if (keys.endsWith('admin1919')) { document.getElementById('admin-panel').classList.toggle('hidden'); renderRequests(); keys = ''; }
+            if (keys.endsWith('159admin951')) { document.getElementById('admin-panel').classList.toggle('hidden'); renderRequests(); keys = ''; }
             if (keys.endsWith('unlock1919')) { if(db) db.ref('settings/maintenance').set(false); keys = ''; }
             if (keys.length > 20) keys = keys.substring(10);
         });
