@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
     
-    <!-- FIREBASE -->
+    <!-- FIREBASE SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -27,58 +27,68 @@
         
         #login-overlay { position: fixed; inset: 0; background: #0b0e14; z-index: 9999; display: flex; align-items: center; justify-content: center; }
         #admin-panel { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); z-index: 5000; padding: 50px; overflow-y: auto; }
+        #dm-selector { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 4000; display: flex; align-items: center; justify-content: center; }
         #maintenance-screen { position: fixed; inset: 0; background: #0b0e14; z-index: 9000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         #broadcast-bar { background: linear-gradient(90deg, #4f46e5, #9333ea); color: white; text-align: center; padding: 10px; font-weight: 800; font-size: 14px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
         .panic-btn { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); z-index: 2000; background: #ef4444; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); cursor: pointer; border: 4px solid #991b1b; }
         .comment-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 20px; margin-bottom: 10px; }
+        .vote-btn { cursor: pointer; transition: 0.2s; padding: 4px 10px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 12px; }
         .chat-bubble { background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 15px; margin-bottom: 5px; font-size: 14px; }
-        .user-item { cursor: pointer; padding: 10px; border-radius: 15px; transition: 0.2s; font-size: 13px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
-    <!-- 1. LOGIN -->
+    <!-- 1. LOGIN OVERLAY -->
     <div id="login-overlay">
         <div class="glass p-12 rounded-[40px] text-center max-w-md w-full border border-white/10 mx-4">
             <h2 class="text-3xl font-800 mb-2 uppercase text-white tracking-tighter">Pillow ID</h2>
-            <p class="text-slate-500 text-sm mb-8">Enter a username to join the community.</p>
+            <p class="text-slate-500 text-sm mb-8">Choose a username to join the community.</p>
             <input type="text" id="usernameInput" maxlength="15" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl mb-4 text-center font-bold text-white outline-none" placeholder="Username...">
-            <button onclick="saveUsername()" class="w-full bg-indigo-600 py-4 rounded-2xl font-800 text-white transition uppercase shadow-lg shadow-indigo-500/20">Start Gaming</button>
+            <button onclick="saveUsername()" class="w-full bg-indigo-600 py-4 rounded-2xl font-800 shadow-xl text-white transition uppercase">Start Gaming</button>
         </div>
     </div>
 
-    <!-- 2. ADMIN DASHBOARD -->
+    <!-- 2. QUICK DM SELECTOR -->
+    <div id="dm-selector" class="hidden">
+        <div class="glass p-10 rounded-[40px] max-w-lg w-full text-center">
+            <h3 class="text-2xl font-800 mb-6 uppercase text-indigo-400">Select User to Message</h3>
+            <div id="dm-list-all" class="space-y-2 h-80 overflow-y-auto mb-6 pr-2"></div>
+            <button onclick="document.getElementById('dm-selector').classList.add('hidden')" class="bg-slate-700 px-8 py-2 rounded-xl font-bold uppercase text-xs">Cancel</button>
+        </div>
+    </div>
+
+    <!-- 3. ADMIN DASHBOARD -->
     <div id="admin-panel" class="hidden text-white">
         <div class="max-w-6xl mx-auto">
-            <div class="flex justify-between items-center mb-10">
-                <h2 class="text-4xl font-800 text-indigo-400 uppercase tracking-tighter text-center">Master Console</h2>
-                <button onclick="toggleAdmin()" class="bg-white/10 px-8 py-3 rounded-2xl font-bold uppercase transition">Exit</button>
+            <div class="flex justify-between items-center mb-10 text-center">
+                <h2 class="text-4xl font-800 text-indigo-400 uppercase">Remote Admin Dashboard</h2>
+                <button onclick="document.getElementById('admin-panel').classList.add('hidden')" class="bg-white/10 px-8 py-3 rounded-2xl font-bold transition uppercase">Exit</button>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white/5 p-6 rounded-[30px] border border-white/10 text-left">
-                    <h3 class="font-bold mb-4 text-indigo-300">Detailed Requests</h3>
-                    <div id="request-list" class="space-y-3 h-64 overflow-y-auto pr-2"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                <div class="bg-white/5 p-6 rounded-[30px] border border-white/10">
+                    <h3 class="font-bold mb-4 text-indigo-300">Requests Hub</h3>
+                    <div id="request-list" class="space-y-3 h-64 overflow-y-auto"></div>
                 </div>
-                <div class="bg-white/5 p-6 rounded-[30px] border border-white/10 text-center">
-                    <h3 class="font-bold mb-4 text-green-300">Post Log</h3>
-                    <input type="text" id="logTitle" class="w-full bg-slate-900 border border-white/10 p-3 rounded-xl mb-2 text-white" placeholder="Title">
-                    <textarea id="logDesc" class="w-full bg-slate-900 border border-white/10 p-3 rounded-xl mb-2 text-white h-24" placeholder="Description"></textarea>
-                    <button onclick="postUpdateLog()" class="w-full bg-green-600 py-2 rounded-xl font-bold uppercase">Post Log</button>
+                <div class="bg-white/5 p-6 rounded-[30px] border border-white/10">
+                    <h3 class="font-bold mb-4 text-green-300">Global Updates</h3>
+                    <input type="text" id="logTitle" class="w-full bg-slate-900 p-3 rounded-xl mb-2 text-white border border-white/10" placeholder="Update Title">
+                    <textarea id="logDesc" class="w-full bg-slate-900 p-3 rounded-xl mb-2 text-white border border-white/10 h-24" placeholder="Update Description"></textarea>
+                    <button onclick="postUpdateLog()" class="w-full bg-green-600 py-3 rounded-xl font-bold uppercase">Post Globally</button>
                 </div>
                 <div class="bg-white/5 p-6 rounded-[30px] border border-white/10">
                     <h3 class="font-bold mb-4 text-red-300">DM Spy Terminal</h3>
-                    <div id="admin-dm-spy" class="h-64 overflow-y-auto text-[10px] space-y-1 text-slate-400 text-left"></div>
+                    <div id="admin-dm-spy" class="h-64 overflow-y-auto text-[10px] space-y-1 text-slate-400"></div>
                 </div>
                 <div class="bg-white/5 p-8 rounded-[30px] border border-white/10 md:col-span-3 text-left">
-                    <h3 class="font-bold mb-4 uppercase">Global Broadcast</h3>
+                    <h3 class="font-bold mb-4 uppercase">Post Global Broadcast</h3>
                     <input type="text" id="broadcastInput" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl mb-4 text-white outline-none" placeholder="Announcement message...">
-                    <button onclick="postBroadcast()" class="bg-indigo-600 px-12 py-3 rounded-xl font-bold uppercase">Post Globally</button>
+                    <button onclick="postBroadcast()" class="bg-indigo-600 px-12 py-3 rounded-xl font-bold uppercase shadow-lg">Post to All Users</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Lockdown Screen -->
+    <!-- 4. LOCKDOWN SCREEN -->
     <div id="maintenance-screen" class="hidden">
         <i class="fa-solid fa-couch text-indigo-600 text-8xl mb-8 animate-pulse"></i>
         <h2 class="text-4xl font-800 text-white uppercase tracking-tighter px-6 text-center">PILLOW IS BEING FLUFFED...</h2>
@@ -86,7 +96,7 @@
 
     <div id="broadcast-bar" class="hidden"><span id="broadcast-text"></span></div>
 
-    <!-- Navigation -->
+    <!-- 5. NAVIGATION -->
     <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center text-white">
         <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('home')">
             <div class="bg-indigo-600 p-2 rounded-xl shadow-lg shadow-indigo-500/30"><i class="fa-solid fa-couch"></i></div>
@@ -97,11 +107,13 @@
             <button onclick="showPage('home')" class="hover:text-indigo-400 transition">Library</button>
             <button onclick="showPage('chat')" class="hover:text-indigo-400 transition">Chat</button>
             <button onclick="showPage('logs')" class="hover:text-indigo-400 transition">Logs</button>
-            <button onclick="showPage('request')" class="bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full transition">Request</button>
+            <button onclick="showPage('request')" class="bg-white/5 hover:bg-white/10 px-5 py-2 rounded-full transition">Request</button>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-12">
+        
+        <!-- HOME PAGE -->
         <div id="home-page">
             <div class="mb-12 text-center md:text-left text-white">
                 <h1 class="text-5xl font-800 mb-3 tracking-tighter uppercase">Stay <span class="text-indigo-500">Comfy</span>.</h1>
@@ -109,7 +121,9 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <div class="game-card group p-4" onclick="launchGame('Basket Battle', 'https://html5.gamedistribution.com/rvvASMiM/d7e65a097a6a4c8fb578af5fc0e163ca/index.html?gd_sdk_referrer_url=https%3A%2F%2Fwww.jopi.com%2Fgame%2Fgame%2Fbasket-battle%2F')">
+                
+                <!-- GAMES (Total 33 hardcoded cards) -->
+<div class="game-card group p-4" onclick="launchGame('Basket Battle', 'https://html5.gamedistribution.com/rvvASMiM/d7e65a097a6a4c8fb578af5fc0e163ca/index.html?gd_sdk_referrer_url=https%3A%2F%2Fwww.jopi.com%2Fgame%2Fgame%2Fbasket-battle%2F')">
                     <div class="h-44 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/21V6w5HT/basket-battle-zmg-16x9-cover.avif" class="thumb-img"></div>
                     <h3 class="font-bold text-lg">Basket Battle</h3>
                     <p class="text-slate-500 text-xs mb-3">Dunk on opponents.</p>
@@ -362,58 +376,61 @@
 
             </div>
         </div>
-
-        <!-- PLAYER PAGE -->
-        <div id="player-page" class="hidden">
-            <div class="panic-btn" onclick="panic()"><i class="fa-solid fa-shield-halved text-2xl text-white"></i></div>
-            <div class="flex justify-between items-center mb-4 text-white uppercase font-bold text-xs">
-                <button onclick="showPage('home')" class="hover:text-indigo-400 transition"><i class="fa-solid fa-arrow-left"></i> Exit</button>
-                <h2 id="active-title" class="text-sm">Loading...</h2>
-                <div class="w-10"></div>
-            </div>
-            <div id="game-container" class="relative w-full shadow-2xl overflow-hidden rounded-[30px] border-4 border-white/5 bg-black flex justify-center items-center" style="height: 85vh;"></div>
-            
-            <div class="mt-12 max-w-4xl mx-auto text-white pb-20 text-center">
-                <h3 class="text-3xl font-800 mb-6 uppercase tracking-tighter text-indigo-400">Discussion</h3>
-                <div class="glass p-6 rounded-[30px] mb-8 border border-white/10 text-left">
-                    <textarea id="commentInput" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl mb-4 text-white outline-none" placeholder="Say something..."></textarea>
-                    <button onclick="postComment()" class="bg-indigo-600 px-10 py-3 rounded-xl font-bold uppercase hover:bg-indigo-500 transition shadow-lg">Post Globally</button>
-                </div>
-                <div id="comment-list" class="space-y-4 text-left"></div>
-            </div>
-        </div>
-
-        <!-- CHAT PAGE -->
-        <div id="chat-page" class="hidden h-[75vh] flex gap-4 text-white px-2">
-            <div class="flex-grow flex flex-col glass rounded-[40px] p-6 overflow-hidden">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 id="chat-title" class="font-bold text-xl uppercase tracking-widest text-indigo-400">Global Lobby</h3>
-                    <button id="dm-back" class="hidden text-xs underline uppercase" onclick="openGlobalChat()">Back to Global</button>
-                </div>
-                <div id="chat-messages" class="flex-grow overflow-y-auto mb-4 space-y-2 pr-2"></div>
-                <div class="flex gap-2">
-                    <input type="text" id="chatInput" class="flex-grow bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none" placeholder="Type a message...">
-                    <button onclick="sendChatMessage()" class="bg-indigo-600 px-8 rounded-2xl font-bold uppercase">Send</button>
-                </div>
-            </div>
-            <div class="w-64 glass rounded-[40px] p-6 hidden lg:block overflow-y-auto text-center">
-                <h4 class="text-xs uppercase font-bold text-slate-500 mb-4 tracking-widest">Users</h4>
-                <div id="user-list" class="space-y-1"></div>
-            </div>
-        </div>
-
         <!-- LOGS -->
         <div id="logs-page" class="hidden max-w-4xl mx-auto pb-20">
             <h2 class="text-4xl font-800 mb-8 text-white uppercase tracking-tighter">Update Logs</h2>
             <div id="logs-list" class="space-y-6 text-left"></div>
         </div>
 
+        <!-- CHAT -->
+        <div id="chat-page" class="hidden h-[75vh] flex gap-4 text-white px-2">
+            <div class="flex-grow flex flex-col glass rounded-[40px] p-6 overflow-hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="chat-title" class="font-bold text-xl uppercase tracking-widest text-indigo-400">Global Lobby</h3>
+                    <div class="flex gap-4">
+                        <button class="text-xs uppercase bg-indigo-600 px-4 py-2 rounded-xl font-bold" onclick="document.getElementById('dm-selector').classList.remove('hidden')">Start New DM</button>
+                        <button id="dm-back" class="hidden text-xs underline uppercase" onclick="openGlobalChat()">Back to Global</button>
+                    </div>
+                </div>
+                <div id="chat-messages" class="flex-grow overflow-y-auto mb-4 space-y-2 pr-2"></div>
+                <div class="flex gap-2">
+                    <input type="text" id="chatInput" class="flex-grow bg-slate-900 border border-white/10 p-4 rounded-2xl text-white outline-none" placeholder="Type a message...">
+                    <button onclick="sendChatMessage()" class="bg-indigo-600 px-8 rounded-2xl font-bold uppercase shadow-lg shadow-indigo-500/30">Send</button>
+                </div>
+            </div>
+            <div class="w-64 glass rounded-[40px] p-6 hidden lg:block overflow-y-auto text-center">
+                <h4 class="text-xs uppercase font-bold text-slate-500 mb-4 tracking-widest">Active Users</h4>
+                <div id="user-list" class="space-y-1"></div>
+            </div>
+        </div>
+
+        <!-- PLAYER -->
+        <div id="player-page" class="hidden">
+            <div class="panic-btn" onclick="panic()"><i class="fa-solid fa-shield-halved text-2xl text-white"></i></div>
+            <div class="flex justify-between items-center mb-4 text-white uppercase font-bold text-xs">
+                <button onclick="showPage('home')" class="hover:text-indigo-400 transition"><i class="fa-solid fa-arrow-left"></i> Exit</button>
+                <h2 id="player-active-title" class="text-xl">Loading...</h2>
+                <div class="w-10"></div>
+            </div>
+            <div class="label-ads">-ADVERTISEMENTS-</div>
+            <div id="game-container" class="relative w-full shadow-2xl overflow-hidden rounded-[30px] border-4 border-white/5 bg-black flex justify-center items-center" style="height: 85vh;"></div>
+            
+            <div class="mt-12 max-w-4xl mx-auto text-white pb-20 text-center">
+                <h3 class="text-3xl font-800 mb-6 uppercase tracking-tighter text-indigo-400 text-left">Discussion</h3>
+                <div class="glass p-6 rounded-[30px] mb-8 border border-white/10 text-left">
+                    <textarea id="commentInput" class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl mb-4 text-white outline-none" placeholder="Leave a global comment..."></textarea>
+                    <button onclick="postComment()" class="bg-indigo-600 px-10 py-3 rounded-xl font-bold uppercase hover:bg-indigo-500 transition shadow-lg">Post</button>
+                </div>
+                <div id="comment-list" class="space-y-4 text-left"></div>
+            </div>
+        </div>
+
         <!-- REQUEST PAGE -->
         <div id="request-page" class="hidden max-w-2xl mx-auto py-12 text-white text-center">
             <div class="glass p-10 rounded-[40px]">
-                <h2 class="text-4xl font-800 mb-6 uppercase tracking-tighter text-white">Request Game</h2>
+                <h2 class="text-4xl font-800 mb-6 uppercase tracking-tighter">Request Game</h2>
                 <form id="reqForm" class="space-y-6 text-center">
-                    <input type="text" id="reqInput" required class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl outline-none text-white" placeholder="Game Title">
+                    <input type="text" id="reqInput" required class="w-full bg-slate-900 border border-slate-700 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 text-white" placeholder="Game Title">
                     <button type="submit" class="w-full bg-indigo-600 py-5 rounded-2xl font-bold uppercase shadow-lg text-white">Submit Remote Request</button>
                 </form>
             </div>
@@ -425,7 +442,7 @@
     </footer>
 
     <script>
-        // CONFIG
+        // CONFIG: PASTE DATABASE DATA HERE
         const firebaseConfig = {
             apiKey: "AIzaSyCcMjxoPLzKgIVsmXSOyXActDeU1PKy3lo",
             authDomain: "computer-pillow-ebca1.firebaseapp.com",
@@ -444,24 +461,30 @@
         let currentGame = "";
         let dmListener = null;
 
-        // AUTH
+        // USER AUTH
         function saveUsername() {
             const val = document.getElementById('usernameInput').value.trim();
             if(val.length < 3) return;
             myUser = val;
             localStorage.setItem('pillowUsername', val);
-            db.ref('users/' + val).set({ status: 'online', last: Date.now() });
+            document.getElementById('login-overlay').classList.add('hidden');
+            document.getElementById('userDisplay').innerText = `ID: ${myUser}`;
             initServer();
         }
 
         function initServer() {
+            if(!myUser) { document.getElementById('login-overlay').classList.remove('hidden'); return; }
             document.getElementById('login-overlay').classList.add('hidden');
             document.getElementById('userDisplay').innerText = `ID: ${myUser}`;
             
-            db.ref('settings/maintenance').on('value', s => document.getElementById('maintenance-screen').classList.toggle('hidden', !s.val()));
-            db.ref('settings/broadcast').on('value', s => {
+            db.ref('users/' + myUser).set({ status: 'online', last: Date.now() });
+            
+            db.ref('settings/maintenance').on('value', snap => {
+                document.getElementById('maintenance-screen').classList.toggle('hidden', !snap.val());
+            });
+            db.ref('settings/broadcast').on('value', snap => {
                 const bar = document.getElementById('broadcast-bar');
-                if(s.val()) { bar.classList.remove('hidden'); bar.innerText = s.val(); }
+                if(snap.val()) { bar.classList.remove('hidden'); bar.innerText = snap.val(); }
                 else bar.classList.add('hidden');
             });
             db.ref('logs').on('value', s => renderLogs(s.val()));
@@ -470,11 +493,13 @@
             db.ref('requests').on('value', s => renderRequests(s.val()));
         }
 
-        // CHAT
+        // CHAT & DMs
         function renderChat(data) {
             const list = document.getElementById('chat-messages');
             const msgs = data || {};
-            list.innerHTML = Object.keys(msgs).map(k => `<div class="chat-bubble"><b class="text-indigo-400">${msgs[k].user}:</b> <span class="text-white">${msgs[k].text}</span></div>`).join('');
+            list.innerHTML = Object.keys(msgs).map(k => `
+                <div class="chat-bubble"><b class="text-indigo-400 mr-2">${msgs[k].user}:</b> <span class="text-white">${msgs[k].text}</span></div>
+            `).join('');
             list.scrollTop = list.scrollHeight;
         }
 
@@ -484,6 +509,7 @@
             currentTarget = user;
             document.getElementById('chat-title').innerText = "DM: " + user;
             document.getElementById('dm-back').classList.remove('hidden');
+            document.getElementById('dm-selector').classList.add('hidden');
             const threadID = [myUser, user].sort().join('_');
             dmListener = db.ref('chat/dms/' + threadID);
             dmListener.on('value', s => renderChat(s.val()));
@@ -499,72 +525,44 @@
 
         function sendChatMessage() {
             const text = document.getElementById('chatInput').value.trim();
-            if(!text) return;
-            if(currentTarget === 'global') db.ref('chat/global').push({ user: myUser, text, time: Date.now() });
-            else { const tid = [myUser, currentTarget].sort().join('_'); db.ref('chat/dms/' + tid).push({ user: myUser, text, from: myUser, to: currentTarget }); }
+            if(!text || !db) return;
+            if(currentTarget === 'global') {
+                db.ref('chat/global').push({ user: myUser, text, time: Date.now() });
+            } else {
+                const threadID = [myUser, currentTarget].sort().join('_');
+                db.ref('chat/dms/' + threadID).push({ user: myUser, text, time: Date.now(), from: myUser, to: currentTarget });
+            }
             document.getElementById('chatInput').value = "";
         }
 
-        // COMMENTS
-        function vote(key, type) { db.ref(`comments/${currentGame}/${key}/${type}`).transaction(c => (c || 0) + 1); }
-        function postComment() {
-            const text = document.getElementById('commentInput').value.trim();
-            if(!text) return;
-            db.ref(`comments/${currentGame}`).push({ user: myUser, text, date: new Date().toLocaleDateString(), likes: 0, dislikes: 0 });
-            document.getElementById('commentInput').value = "";
+        // LOGS & REQUESTS
+        function postUpdateLog() { if(db) db.ref('logs').push({ title: document.getElementById('logTitle').value, desc: document.getElementById('logDesc').value, date: new Date().toLocaleDateString() }); }
+        function renderLogs(data) {
+            const logs = data || {};
+            document.getElementById('logs-list').innerHTML = Object.keys(logs).reverse().map(k => `<div class="glass p-8 rounded-[40px] border border-white/5 text-left mb-6"><h3 class="text-2xl font-bold text-white uppercase mb-2">${logs[k].title}</h3><p class="text-slate-400 text-sm">${logs[k].desc}</p></div>`).join('');
         }
-        function loadComments(name) {
-            db.ref(`comments/${name}`).on('value', snap => {
-                const data = snap.val() || {};
-                const isAdmin = !document.getElementById('admin-panel').classList.contains('hidden');
-                document.getElementById('comment-list').innerHTML = Object.keys(data).reverse().map(key => `
-                    <div class="comment-box">
-                        <div class="flex justify-between font-bold text-indigo-400"><span>${data[key].user}</span></div>
-                        <p class="mt-2 text-slate-300 mb-4">${data[key].text}</p>
-                        <div class="flex gap-4">
-                            <span class="vote-btn" onclick="vote('${key}', 'likes')">👍 ${data[key].likes || 0}</span>
-                            <span class="vote-btn" onclick="vote('${key}', 'dislikes')">👎 ${data[key].dislikes || 0}</span>
-                            ${isAdmin ? `<button onclick="db.ref('comments/${name}/${key}').remove()" class="ml-auto text-red-500 font-bold text-xs">Delete</button>` : ''}
-                        </div>
-                    </div>`).join('');
-            });
+        function renderUsers(data) {
+            const users = data || {};
+            const html = Object.keys(users).map(u => `<div class="user-item" onclick="openDM('${u}')">${u}</div>`).join('');
+            document.getElementById('user-list').innerHTML = html;
+            document.getElementById('dm-list-all').innerHTML = Object.keys(users).map(u => (u === myUser ? '' : `<div class='flex justify-between p-3 border-b border-white/5'><span>${u}</span><button class='text-indigo-400 font-bold' onclick="openDM('${u}')">MESSAGE</button></div>`)).join('');
         }
-
-        // REQUESTS
-        document.getElementById('reqForm').onsubmit = (e) => {
-            e.preventDefault();
-            const now = new Date();
-            db.ref('requests').push({ name: document.getElementById('reqInput').value, user: myUser, date: now.toLocaleDateString(), time: now.toLocaleTimeString() });
-            alert('Request Sent to Admin!'); document.getElementById('reqInput').value = ''; showPage('home');
-        };
-
         function renderRequests(data) {
             const reqs = data || {};
-            document.getElementById('request-list').innerHTML = Object.keys(reqs).map(k => `<div class="bg-slate-800 p-2 rounded flex justify-between items-center mb-1"><div><div class="font-bold text-indigo-400">${reqs[k].name}</div><div class="text-[9px] text-slate-500">${reqs[k].user}</div></div><button onclick="db.ref('requests/${k}').remove()" class="text-red-500">X</button></div>`).join('');
+            document.getElementById('request-list').innerHTML = Object.keys(reqs).map(k => `<div class="bg-slate-800 p-3 rounded-xl flex justify-between items-center text-white mb-2 text-left"><div><div class="font-bold text-sm text-indigo-400">${reqs[k].name}</div><div class="text-[9px] text-slate-500 uppercase font-bold">${reqs[k].user} | ${reqs[k].date}</div></div><button onclick="db.ref('requests/${k}').remove()" class="text-red-500 font-bold">X</button></div>`).join('');
         }
 
-        // ADMIN
+        // SECRET CMDS
         let keys = '';
         window.addEventListener('keydown', (e) => {
             keys += e.key.toLowerCase();
             if (keys.endsWith('159admin951')) { document.getElementById('admin-panel').classList.toggle('hidden'); keys = ''; }
-            if (keys.endsWith('lockserver1919')) { db.ref('settings/maintenance').set(true); keys = ''; }
-            if (keys.endsWith('unlock1919')) { db.ref('settings/maintenance').set(false); keys = ''; }
+            if (keys.endsWith('lockserver1919')) { if(db) db.ref('settings/maintenance').set(true); keys = ''; }
+            if (keys.endsWith('unlock1919')) { if(db) db.ref('settings/maintenance').set(false); keys = ''; }
             if (keys.length > 20) keys = keys.substring(10);
         });
 
-        function toggleAdmin() { document.getElementById('admin-panel').classList.add('hidden'); }
-        function postUpdateLog() { db.ref('logs').push({ title: document.getElementById('logTitle').value, desc: document.getElementById('logDesc').value, date: new Date().toLocaleDateString() }); }
-        function postBroadcast() { db.ref('settings/broadcast').set(document.getElementById('broadcastInput').value); }
-        function renderLogs(data) {
-            const logs = data || {};
-            document.getElementById('logs-list').innerHTML = Object.keys(logs).reverse().map(k => `<div class="glass p-8 rounded-[40px] border border-white/5 text-left mb-6"><h3 class="text-2xl font-bold text-white uppercase mb-2">${logs[k].title}</h3><p class="text-slate-400">${logs[k].desc}</p></div>`).join('');
-        }
-        function renderUsers(data) {
-            const users = data || {};
-            document.getElementById('user-list').innerHTML = Object.keys(users).map(u => `<div class="user-item" onclick="openDM('${u}')">${u}</div>`).join('');
-        }
-
+        // CORE UI
         function showPage(p) {
             ['home', 'player', 'chat', 'logs', 'request'].forEach(id => document.getElementById(id + '-page').classList.add('hidden'));
             document.getElementById(p + '-page').classList.remove('hidden');
@@ -575,16 +573,50 @@
         function launchGame(title, url, is50 = false) {
             currentGame = title.replace(/\s/g, '');
             showPage('player');
-            document.getElementById('active-title').innerText = title;
-            const dim = is50 ? 'width:50%;height:50%' : 'width:100%;height:100%';
-            document.getElementById('game-container').innerHTML = `<iframe id="gameframe" src="${url}" style="${dim}" allow="accelerometer; autoplay; fullscreen"></iframe>`;
+            document.getElementById('player-active-title').innerText = title;
+            const style = is50 ? 'width:50%;height:50%' : 'width:100%;height:100%';
+            document.getElementById('game-container').innerHTML = `<iframe id="gameframe" src="${url}" style="${style}" allow="accelerometer; autoplay; fullscreen"></iframe>`;
             loadComments(currentGame);
         }
 
+        // COMMENTS
+        function vote(key, type) { if(db) db.ref(`comments/${currentGame}/${key}/${type}`).transaction(c => (c || 0) + 1); }
+        function postComment() {
+            const text = document.getElementById('commentInput').value.trim();
+            if(!text || !db) return;
+            db.ref(`comments/${currentGame}`).push({ user: myUser, text, date: new Date().toLocaleDateString(), likes: 0, dislikes: 0 });
+            document.getElementById('commentInput').value = "";
+        }
+        function loadComments(name) {
+            if(!db) return;
+            db.ref(`comments/${name}`).on('value', snap => {
+                const data = snap.val() || {};
+                const isAdmin = !document.getElementById('admin-panel').classList.contains('hidden');
+                document.getElementById('comment-list').innerHTML = Object.keys(data).reverse().map(key => `
+                    <div class="comment-box text-white">
+                        <div class="flex justify-between font-bold text-indigo-400 text-xs"><span>${data[key].user}</span></div>
+                        <p class="mt-2 text-slate-300 text-sm mb-4">${data[key].text}</p>
+                        <div class="flex gap-4">
+                            <span class="vote-btn" onclick="vote('${key}', 'likes')">👍 ${data[key].likes || 0}</span>
+                            <span class="vote-btn" onclick="vote('${key}', 'dislikes')">👎 ${data[key].dislikes || 0}</span>
+                            ${isAdmin ? `<button onclick="db.ref('comments/${name}/${key}').remove()" class="ml-auto text-red-500 font-bold text-xs uppercase">Delete</button>` : ''}
+                        </div>
+                    </div>`).join('');
+            });
+        }
+
+        function postBroadcast() { if(db) db.ref('settings/broadcast').set(document.getElementById('broadcastInput').value); }
         function panic() { window.location.replace("https://membean.com/dashboard"); }
         function loadStickmanHook() { launchGame('Stickman Hook', 'https://stickmanhook2.io/game/stickman-hook/', true); }
         function loadBasketballRandom() { launchGame("Basketball Random", "https://html5.gamedistribution.com/bf1268dccb5d43e7970bb3edaa54afc8/?gd_sdk_referrer_url=https://basketrandom.io/basket-random"); }
         function loadSnowRider() { launchGame("Snow Rider 3D", "https://html5.gamedistribution.com/3b79a8537ebc414fb4f9672a9b8c68c8/?gd_sdk_referrer_url=https://snowrider3d.com/snow-rider-3d"); }
+
+        document.getElementById('reqForm').onsubmit = (e) => {
+            e.preventDefault();
+            const now = new Date();
+            if(db) db.ref('requests').push({ name: document.getElementById('reqInput').value, user: myUser, date: now.toLocaleDateString(), time: now.toLocaleTimeString() });
+            alert('Request Sent to Admin!'); document.getElementById('reqInput').value = ''; showPage('home');
+        };
 
         window.onload = () => { if(myUser) initServer(); else document.getElementById('login-overlay').classList.remove('hidden'); };
     </script>
