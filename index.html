@@ -439,15 +439,18 @@
             });
         }
 
-        // ADMIN
+       // SECRET COMMANDS
         let keys = '';
         window.addEventListener('keydown', (e) => {
             keys += e.key.toLowerCase();
-            if (keys.endsWith('159admin')) { document.getElementById('admin-panel').classList.toggle('hidden'); renderRequests(); keys = ''; }
+            if (keys.endsWith('admin1919')) { document.getElementById('admin-panel').classList.toggle('hidden'); renderRequests(); keys = ''; }
+            if (keys.endsWith('lockserver1919')) { if(db) db.ref('settings/maintenance').set(true); keys = ''; }
             if (keys.endsWith('unlock1919')) { if(db) db.ref('settings/maintenance').set(false); keys = ''; }
             if (keys.length > 20) keys = keys.substring(10);
         });
 
+        function toggleAdmin() { document.getElementById('admin-panel').classList.add('hidden'); }
+        function postBroadcast() { if(db) db.ref('settings/broadcast').set(document.getElementById('broadcastInput').value); }
         function renderRequests() {
             if(!db) return;
             db.ref('requests').on('value', snap => {
